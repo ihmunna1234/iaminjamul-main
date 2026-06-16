@@ -1,0 +1,15 @@
+{
+  "name": "blog-agent",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "AI blog agent that writes trending posts using Gemini and saves to Supabase",
+  "scripts": {
+    "start": "tsx blog-agent.ts",
+    "dry-run": "tsx blog-agent.ts --dry-run"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "@supabase/supabase-js": "^2.49.8",
+    "tsx": "^4.19.4"
+  }
+}

@@ -1,0 +1,166 @@
+import { useState, useEffect } from 'react';
+import { Star, Quote } from 'lucide-react';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '@/components/ui/carousel';
+
+const testimonials = [
+  {
+    name: 'Sarah Johnson',
+    role: 'CEO, TechStartup',
+    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face',
+    rating: 5,
+    review: 'Thanks to Injamul for their professional work. The website they created for my business exceeded my expectations, and my clients have given positive feedback about its design and user-friendliness.',
+    platform: 'Upwork',
+    totalReviews: 50,
+  },
+  {
+    name: 'Michael Chen',
+    role: 'Marketing Director',
+    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
+    rating: 5,
+    review: 'Excellent SEO work! Our website traffic increased by 200% within three months. Injamul is a true professional who delivers results.',
+    platform: 'Fiverr',
+    totalReviews: 85,
+  },
+  {
+    name: 'Emily Davis',
+    role: 'Business Owner',
+    image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
+    rating: 5,
+    review: 'As an education consultant, Injamul helped me reach more students than ever before. His expertise in sales and marketing is outstanding.',
+    platform: 'LinkedIn',
+    totalReviews: 120,
+  },
+  {
+    name: 'David Rodriguez',
+    role: 'E-commerce Manager',
+    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face',
+    rating: 5,
+    review: 'Working with Injamul transformed our online presence. His web development skills are top-notch, and the attention to detail is remarkable. Highly recommended!',
+    platform: 'Upwork',
+    totalReviews: 95,
+  },
+  {
+    name: 'Jessica Martinez',
+    role: 'Startup Founder',
+    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face',
+    rating: 5,
+    review: 'Injamul\'s expertise in sales and education consulting helped us scale our business rapidly. His strategic approach and dedication are unmatched. A true professional!',
+    platform: 'LinkedIn',
+    totalReviews: 78,
+  },
+];
+
+export function TestimonialsSection() {
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    if (!api) return;
+
+    setCurrent(api.selectedScrollSnap());
+
+    api.on('select', () => {
+      setCurrent(api.selectedScrollSnap());
+    });
+  }, [api]);
+
+  return (
+    <section id="testimonials" className="py-20 bg-background">
+      <div className="container mx-auto px-4 lg:px-8">
+        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 mb-12">
+          <div>
+            <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-medium rounded-full mb-4">
+              TESTIMONIALS
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+              Clients Testimonials
+            </h2>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              {testimonials.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => api?.scrollTo(index)}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    index === current ? 'bg-primary w-8' : 'bg-muted-foreground/30'
+                  }`}
+                  aria-label={`Go to testimonial ${index + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="max-w-4xl mx-auto">
+          <Carousel
+            setApi={setApi}
+            opts={{
+              align: 'start',
+              loop: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent>
+              {testimonials.map((testimonial, index) => (
+                <CarouselItem key={index}>
+                  <div className="bg-card rounded-2xl p-8 shadow-lg border border-border relative transition-all duration-500">
+                    <div className="flex flex-col md:flex-row gap-8">
+                      <div className="flex-shrink-0">
+                        <div className="relative">
+                          <div className="w-32 h-32 rounded-full overflow-hidden ring-4 ring-primary ring-offset-4 ring-offset-background">
+                            <img
+                              src={testimonial.image}
+                              alt={testimonial.name}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex-1">
+                        <div className="flex flex-wrap items-center gap-4 mb-4">
+                          <span className="text-sm text-muted-foreground">Reviews On</span>
+                          <div className="flex items-center gap-2">
+                            <span className="font-bold text-primary">{testimonial.platform}</span>
+                            <span className="text-sm text-muted-foreground">
+                              4.9/ {testimonial.totalReviews} Reviews
+                            </span>
+                          </div>
+                          <div className="flex gap-0.5">
+                            {[...Array(testimonial.rating)].map((_, i) => (
+                              <Star key={i} className="w-4 h-4 fill-primary text-primary" />
+                            ))}
+                          </div>
+                        </div>
+
+                        <Quote className="w-10 h-10 text-primary/20 mb-2" />
+
+                        <p className="text-muted-foreground leading-relaxed mb-6">
+                          "{testimonial.review}"
+                        </p>
+
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h4 className="font-bold text-foreground">{testimonial.name}</h4>
+                            <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                          </div>
+                          <span className="text-4xl font-bold text-muted-foreground/20">
+                            0{index + 1}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="left-0 lg:-left-12" />
+            <CarouselNext className="right-0 lg:-right-12" />
+          </Carousel>
+        </div>
+      </div>
+    </section>
+  );
+}
