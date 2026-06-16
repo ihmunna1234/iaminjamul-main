@@ -25,8 +25,8 @@ const projects: Project[] = [
     category: 'E-commerce',
     image: 'https://images.unsplash.com/photo-1557821552-17105176677c?w=600&h=400&fit=crop',
     tags: ['React', 'Node.js', 'MongoDB', 'Stripe'],
-    liveUrl: '#',
-    githubUrl: '#',
+    liveUrl: undefined,
+    githubUrl: undefined,
   },
   {
     id: '2',
@@ -47,8 +47,8 @@ const projects: Project[] = [
     category: 'Website',
     image: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=600&h=400&fit=crop',
     tags: ['React', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
-    liveUrl: '#',
-    githubUrl: '#',
+    liveUrl: undefined,
+    githubUrl: undefined,
   },
   {
     id: '4',
@@ -57,8 +57,8 @@ const projects: Project[] = [
     category: 'Web App',
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop',
     tags: ['React', 'Next.js', 'PostgreSQL', 'Chart.js'],
-    liveUrl: '#',
-    githubUrl: '#',
+    liveUrl: undefined,
+    githubUrl: undefined,
   },
   {
     id: '5',

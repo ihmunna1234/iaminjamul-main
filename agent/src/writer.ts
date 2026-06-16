@@ -136,10 +136,11 @@ export async function writeBlogPost(topic: TrendingTopic): Promise<GeneratedBlog
 
   const genAI = new GoogleGenerativeAI(apiKey);
   const model = genAI.getGenerativeModel({
-    model: 'gemini-1.5-flash',
+    model: 'gemini-3.5-flash',
     generationConfig: {
       temperature: 0.8,
       maxOutputTokens: 4096,
+      responseMimeType: 'application/json',
     },
   });
 

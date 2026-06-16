@@ -13,9 +13,29 @@
  *   NEWS_API_KEY                → Get free at https://newsapi.org (optional)
  */
 
+import { readFileSync } from 'fs';
+import { resolve } from 'path';
+
+// Load .env file for local development (GitHub Actions sets secrets directly)
+try {
+  const envPath = resolve(process.cwd(), '.env');
+  const envFile = readFileSync(envPath, 'utf-8');
+  for (const line of envFile.split('\n')) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const [key, ...rest] = trimmed.split('=');
+    if (key && rest.length && !process.env[key]) {
+      process.env[key] = rest.join('=');
+    }
+  }
+} catch {
+  // No .env file — using system environment variables (GitHub Actions)
+}
+
 import { fetchTrendingTopics } from './src/trends.js';
 import { writeBlogPost } from './src/writer.js';
 import { saveBlogPost, getRecentPostTitles } from './src/storage.js';
+
 
 // ─── Parse CLI flags ─────────────────────────────────────────────────────────
 const args = process.argv.slice(2);

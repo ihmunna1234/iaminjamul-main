@@ -125,7 +125,7 @@ export function TestimonialsSection() {
                           <div className="flex items-center gap-2">
                             <span className="font-bold text-primary">{testimonial.platform}</span>
                             <span className="text-sm text-muted-foreground">
-                              4.9/ {testimonial.totalReviews} Reviews
+                              4.9 / {testimonial.totalReviews} Reviews
                             </span>
                           </div>
                           <div className="flex gap-0.5">

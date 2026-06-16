@@ -8,10 +8,19 @@ export function Footer() {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-center md:text-left">
-            <a href="#home" className="text-xl font-bold">
+            <button
+              onClick={() => {
+                if (window.location.pathname === '/') {
+                  document.querySelector('#home')?.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                  window.location.href = '/';
+                }
+              }}
+              className="text-xl font-bold cursor-pointer"
+            >
               <span className="gradient-text">Injamul Hoque</span>
               <span className="text-foreground">.</span>
-            </a>
+            </button>
           </div>
           
           <p className="text-muted-foreground text-sm flex items-center gap-1">
