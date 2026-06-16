@@ -24,7 +24,7 @@ export const blogPosts: BlogPost[] = [
     date: '2025-01-20',
     category: 'Marketing',
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop',
-    author: 'Injamul Haque',
+    author: 'Injamul Hoque',
     authorRole: 'Digital Marketing Expert',
     readTime: '5 min read',
     tags: ['Digital Marketing', 'SEO', 'Social Media', 'Trends'],

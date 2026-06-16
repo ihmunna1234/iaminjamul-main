@@ -1,16 +1,18 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Calendar, ArrowRight, Search } from 'lucide-react';
+import { Calendar, ArrowRight, Search, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
-import { blogPosts } from '@/data/blogData';
+import { useBlogPosts } from '@/hooks/useBlogPosts';
 
 export default function BlogList() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
+
+  const { data: blogPosts, isLoading, isError } = useBlogPosts();
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -24,11 +26,13 @@ export default function BlogList() {
     navigate(`/blog/${id}`);
   };
 
-  // Get unique categories
-  const categories = ['All', ...Array.from(new Set(blogPosts.map((post) => post.category)))];
+  // Get unique categories from live data
+  const categories = blogPosts
+    ? ['All', ...Array.from(new Set(blogPosts.map((post) => post.category)))]
+    : ['All'];
 
   // Filter blogs based on search and category
-  const filteredBlogs = blogPosts.filter((post) => {
+  const filteredBlogs = (blogPosts ?? []).filter((post) => {
     const matchesSearch =
       post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -82,8 +86,31 @@ export default function BlogList() {
               ))}
             </div>
           </div>
+
+          {/* Loading state */}
+          {isLoading && (
+            <div className="flex justify-center items-center py-24">
+              <div className="flex flex-col items-center gap-4">
+                <Loader2 className="w-10 h-10 text-primary animate-spin" />
+                <p className="text-muted-foreground">Loading latest articles...</p>
+              </div>
+            </div>
+          )}
+
+          {/* Error state */}
+          {isError && (
+            <div className="text-center py-20">
+              <p className="text-muted-foreground text-lg mb-4">
+                Unable to load articles right now.
+              </p>
+              <Button variant="outline" onClick={() => window.location.reload()}>
+                Try Again
+              </Button>
+            </div>
+          )}
+
           {/* Blog Grid */}
-          {filteredBlogs.length > 0 ? (
+          {!isLoading && !isError && filteredBlogs.length > 0 && (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredBlogs.map((post, index) => (
                 <article
@@ -134,10 +161,19 @@ export default function BlogList() {
                 </article>
               ))}
             </div>
-          ) : (
+          )}
+
+          {/* Empty / no results state */}
+          {!isLoading && !isError && filteredBlogs.length === 0 && (
             <div className="text-center py-20">
               <p className="text-muted-foreground text-lg mb-4">No articles found</p>
-              <Button variant="outline" onClick={() => { setSearchQuery(''); setSelectedCategory('All'); }}>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setSearchQuery('');
+                  setSelectedCategory('All');
+                }}
+              >
                 Clear Filters
               </Button>
             </div>
