@@ -37,26 +37,28 @@ const faqs = [
 
 export function FAQSection() {
   return (
-    <section id="faq" className="py-20 bg-background">
+    <section id="faq" className="py-24 bg-[#f7f7f7] text-black border-t border-black/5 relative overflow-hidden">
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          
           {/* Left side - Image with chat prompt */}
           <div className="relative">
-            <div className="bg-muted/50 rounded-3xl p-4 md:p-8 relative overflow-hidden">
-              <div className="aspect-square max-w-md mx-auto relative">
+            <div className="bg-white border border-black/5 rounded-3xl p-4 md:p-6 shadow-sm relative overflow-hidden">
+              <div className="aspect-square max-w-sm mx-auto relative">
                 <img
                   src={FaqPhoto}
                   alt="Consultant"
-                  className="w-full h-full object-cover rounded-2xl"
+                  className="w-full h-full object-cover rounded-2xl grayscale hover:grayscale-0 transition-all duration-700"
                 />
+                
                 {/* Chat bubble - Hidden on mobile, visible on desktop */}
-                <div className="hidden lg:block absolute top-4 right-0 md:translate-x-1/4 max-w-[200px] md:max-w-xs">
-                  <div className="bg-card rounded-xl p-3 md:p-4 shadow-lg">
-                    <p className="text-xs md:text-sm text-muted-foreground mb-1">
-                      Can't find what you are looking for?
+                <div className="hidden lg:block absolute top-4 right-0 translate-x-8 max-w-[220px]">
+                  <div className="bg-[#111111] text-white border border-white/10 rounded-2xl p-4 shadow-xl">
+                    <p className="text-[10px] text-white/50 uppercase font-semibold mb-1">
+                      Need help?
                     </p>
-                    <p className="text-sm md:text-base font-semibold text-foreground">
-                      I would like to chat with you
+                    <p className="text-xs font-bold leading-normal">
+                      Let's chat about your project!
                     </p>
                   </div>
                   <div className="flex justify-end mt-2">
@@ -64,9 +66,9 @@ export function FAQSection() {
                       href="https://wa.me/966582822130"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-10 h-10 md:w-12 md:h-12 bg-primary rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+                      className="w-12 h-12 bg-[#A31414] hover:bg-[#8e1111] rounded-2xl flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all"
                     >
-                      <MessageCircle className="w-5 h-5 md:w-6 md:h-6 text-primary-foreground" />
+                      <MessageCircle className="w-5 h-5 text-white" />
                     </a>
                   </div>
                 </div>
@@ -76,11 +78,12 @@ export function FAQSection() {
 
           {/* Right side - FAQ */}
           <div>
-            <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-medium rounded-full mb-4">
+            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider border border-[#A31414]/20 text-[#A31414] bg-[#A31414]/5 mb-4">
               FAQ
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-8">
-              Frequently Asked Questions
+            <h2 className="text-3xl md:text-5xl font-bold flex flex-col gap-1 mb-8">
+              <span className="font-serif font-medium text-black italic">Frequently Asked</span>
+              <span className="font-sans font-black uppercase tracking-tight text-[#A31414]">Questions</span>
             </h2>
 
             <Accordion type="single" collapsible className="space-y-4">
@@ -88,18 +91,19 @@ export function FAQSection() {
                 <AccordionItem
                   key={index}
                   value={`item-${index}`}
-                  className="bg-card rounded-xl border border-border px-6 data-[state=open]:border-primary/30"
+                  className="bg-white rounded-2xl border border-black/5 px-6 data-[state=open]:border-[#A31414]/30 shadow-sm transition-all duration-300"
                 >
-                  <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
+                  <AccordionTrigger className="text-left text-sm md:text-base font-bold hover:no-underline py-4 text-black hover:text-[#A31414] transition-colors">
                     {faq.question}
                   </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground pb-4">
+                  <AccordionContent className="text-black/60 text-xs md:text-sm font-sans leading-relaxed pb-4">
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>
               ))}
             </Accordion>
           </div>
+
         </div>
       </div>
     </section>

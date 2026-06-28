@@ -4,9 +4,8 @@ import { Menu, X, MessageCircle, Sun, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const navItems = [
-  { name: 'Home', href: '#home' },
   { name: 'About', href: '#about' },
-  { name: 'Experience', href: '#experience' },
+  { name: 'Profile', href: '#experience' },
   { name: 'My Works', href: '#works' },
   { name: 'Blog', href: '#blog' },
   { name: 'Contact', href: '#contact' },
@@ -98,7 +97,7 @@ export function Navbar() {
     >
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between">
-          {/* Logo */}
+          {/* Logo - Fades in only when scrolled */}
           <button
             onClick={() => {
               if (location.pathname === '/') {
@@ -107,14 +106,16 @@ export function Navbar() {
                 navigate('/');
               }
             }}
-            className="text-2xl font-bold cursor-pointer"
+            className={`text-2xl font-bold cursor-pointer transition-all duration-300 ${
+              scrolled ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
+            }`}
           >
             <span className="gradient-text">Injamul Hoque</span>
             <span className="text-foreground">.</span>
           </button>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-8 ml-auto mr-8">
             {navItems.map((item) => (
               <a
                 key={item.name}
@@ -123,15 +124,21 @@ export function Navbar() {
                   e.preventDefault();
                   handleNavClick(item.href);
                 }}
-                className="text-muted-foreground hover:text-foreground transition-colors duration-200 font-medium"
+                className={`transition-colors duration-200 font-medium ${
+                  scrolled
+                    ? 'text-muted-foreground hover:text-foreground'
+                    : 'text-white/90 hover:text-white'
+                }`}
               >
                 {item.name}
               </a>
             ))}
           </div>
 
-          {/* Theme Toggle & CTA Button */}
-          <div className="hidden md:flex items-center gap-4">
+          {/* Theme Toggle & CTA Button - Fades in only when scrolled */}
+          <div className={`hidden md:flex items-center gap-4 transition-all duration-300 ${
+            scrolled ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none w-0 overflow-hidden'
+          }`}>
             {/* Theme Toggle Button */}
             <Button
               variant="ghost"

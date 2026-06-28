@@ -65,15 +65,18 @@ export function TestimonialsSection() {
   }, [api]);
 
   return (
-    <section id="testimonials" className="py-20 bg-background">
+    <section id="testimonials" className="py-24 bg-[#f7f7f7] text-black border-t border-black/5 relative overflow-hidden">
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 mb-12">
+        
+        {/* Section Header */}
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-16">
           <div>
-            <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-medium rounded-full mb-4">
-              TESTIMONIALS
+            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider border border-[#A31414]/20 text-[#A31414] bg-[#A31414]/5 mb-4">
+              Testimonials
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-              Clients Testimonials
+            <h2 className="text-3xl md:text-5xl font-bold flex flex-col gap-1">
+              <span className="font-serif font-medium text-black italic">Client</span>
+              <span className="font-sans font-black uppercase tracking-tight text-[#A31414]">Testimonials</span>
             </h2>
           </div>
 
@@ -84,7 +87,7 @@ export function TestimonialsSection() {
                   key={index}
                   onClick={() => api?.scrollTo(index)}
                   className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    index === current ? 'bg-primary w-8' : 'bg-muted-foreground/30'
+                    index === current ? 'bg-[#A31414] w-8' : 'bg-black/10'
                   }`}
                   aria-label={`Go to testimonial ${index + 1}`}
                 />
@@ -93,6 +96,7 @@ export function TestimonialsSection() {
           </div>
         </div>
 
+        {/* Carousel Content */}
         <div className="max-w-4xl mx-auto">
           <Carousel
             setApi={setApi}
@@ -105,11 +109,11 @@ export function TestimonialsSection() {
             <CarouselContent>
               {testimonials.map((testimonial, index) => (
                 <CarouselItem key={index}>
-                  <div className="bg-card rounded-2xl p-8 shadow-lg border border-border relative transition-all duration-500">
+                  <div className="bg-white border border-black/5 rounded-3xl p-8 shadow-sm hover:border-[#A31414]/30 hover:shadow-md transition-all duration-300 relative">
                     <div className="flex flex-col md:flex-row gap-8">
                       <div className="flex-shrink-0">
                         <div className="relative">
-                          <div className="w-32 h-32 rounded-full overflow-hidden ring-4 ring-primary ring-offset-4 ring-offset-background">
+                          <div className="w-28 h-28 rounded-full overflow-hidden ring-4 ring-[#A31414]/10 ring-offset-4 ring-offset-white mx-auto md:mx-0">
                             <img
                               src={testimonial.image}
                               alt={testimonial.name}
@@ -120,33 +124,33 @@ export function TestimonialsSection() {
                       </div>
 
                       <div className="flex-1">
-                        <div className="flex flex-wrap items-center gap-4 mb-4">
-                          <span className="text-sm text-muted-foreground">Reviews On</span>
+                        <div className="flex flex-wrap items-center gap-3 mb-4 justify-center md:justify-start">
+                          <span className="text-xs text-black/40 uppercase font-medium">Reviews On</span>
                           <div className="flex items-center gap-2">
-                            <span className="font-bold text-primary">{testimonial.platform}</span>
-                            <span className="text-sm text-muted-foreground">
+                            <span className="font-bold text-sm text-[#A31414]">{testimonial.platform}</span>
+                            <span className="text-xs text-black/40">
                               4.9 / {testimonial.totalReviews} Reviews
                             </span>
                           </div>
-                          <div className="flex gap-0.5">
+                          <div className="flex gap-0.5 ml-2">
                             {[...Array(testimonial.rating)].map((_, i) => (
-                              <Star key={i} className="w-4 h-4 fill-primary text-primary" />
+                              <Star key={i} className="w-3.5 h-3.5 fill-[#A31414] text-[#A31414]" />
                             ))}
                           </div>
                         </div>
 
-                        <Quote className="w-10 h-10 text-primary/20 mb-2" />
+                        <Quote className="w-10 h-10 text-[#A31414]/10 mb-2 mx-auto md:mx-0" />
 
-                        <p className="text-muted-foreground leading-relaxed mb-6">
+                        <p className="text-black/80 text-sm md:text-base leading-relaxed mb-6 font-sans italic text-center md:text-left">
                           "{testimonial.review}"
                         </p>
 
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <h4 className="font-bold text-foreground">{testimonial.name}</h4>
-                            <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                        <div className="flex items-center justify-between border-t border-black/5 pt-4">
+                          <div className="text-left">
+                            <h4 className="font-bold text-black text-base">{testimonial.name}</h4>
+                            <p className="text-xs text-black/40 font-medium">{testimonial.role}</p>
                           </div>
-                          <span className="text-4xl font-bold text-muted-foreground/20">
+                          <span className="text-3xl font-black text-black/5 select-none font-sans">
                             0{index + 1}
                           </span>
                         </div>
@@ -156,10 +160,11 @@ export function TestimonialsSection() {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="left-0 lg:-left-12" />
-            <CarouselNext className="right-0 lg:-right-12" />
+            <CarouselPrevious className="left-0 lg:-left-12 border border-black/10 hover:bg-black/5 text-black hover:text-black hidden md:flex" />
+            <CarouselNext className="right-0 lg:-right-12 border border-black/10 hover:bg-black/5 text-black hover:text-black hidden md:flex" />
           </Carousel>
         </div>
+
       </div>
     </section>
   );

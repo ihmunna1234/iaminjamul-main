@@ -152,7 +152,6 @@ const photos: Photo[] = [
     url: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop',
     size: 'large',
   },
-  
 ];
 
 const getSizeClasses = (size: Photo['size']) => {
@@ -173,31 +172,31 @@ const getSizeClasses = (size: Photo['size']) => {
 };
 
 export function PhotoGallerySection() {
-
   return (
-    <section id="gallery" className="py-20 bg-background relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+    <section id="gallery" className="py-24 bg-[#111111] text-white border-t border-white/5 relative overflow-hidden">
+      {/* Subtle background blurs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#A31414]/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#A31414]/10 rounded-full blur-3xl" />
       </div>
 
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-12 animate-fade-in">
-          <span className="section-badge mb-4 inline-flex items-center gap-2">
-            <Camera className="w-4 h-4" />
+        <div className="text-center mb-16 animate-fade-in">
+          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider border border-[#e49797]/20 text-[#e49797] bg-[#e49797]/5 mb-4">
+            <Camera className="w-3.5 h-3.5 mr-1.5 inline-block" />
             Photo Gallery
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Moments & <span className="gradient-text">Memories</span>
+          <h2 className="text-3xl md:text-5xl font-bold flex flex-col items-center justify-center gap-1">
+            <span className="font-serif font-medium text-white italic">Moments &</span>
+            <span className="font-sans font-black uppercase tracking-tight text-[#e49797]">Memories</span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <p className="text-white/60 text-sm md:text-base max-w-xl mx-auto mt-4 font-sans leading-relaxed">
             A glimpse into my professional journey, events, and personal adventures
           </p>
         </div>
 
-        {/* Photo Grid with Masonry Layout & Advanced Animations */}
+        {/* Photo Grid with Masonry Layout */}
         <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 auto-rows-[120px] gap-1" style={{ gridAutoFlow: 'dense' }}>
           {photos.map((photo, index) => (
             <div
@@ -207,69 +206,61 @@ export function PhotoGallerySection() {
                 ${index % 3 === 0 ? 'animate-float' : index % 3 === 1 ? 'animate-wave' : 'animate-bounce-subtle'}
                 ${index % 2 === 0 ? 'animate-rotate-3d' : 'animate-tilt'}
                 transition-all duration-700 ease-out
-                hover:scale-110 hover:z-20 hover:shadow-2xl hover:shadow-primary/40 hover:-translate-y-2
+                hover:scale-110 hover:z-20 hover:shadow-2xl hover:shadow-[#A31414]/30 hover:-translate-y-1
                 ${getSizeClasses(photo.size)}
               `}
               style={{ 
-                animationDelay: `${index * 0.1}s`,
-                animationDuration: `${3 + (index % 5)}s`,
+                animationDelay: `${index * 0.05}s`,
+                animationDuration: `${4 + (index % 4)}s`,
               }}
             >
               {/* Image Container with Perspective */}
-              <div className="relative w-full h-full overflow-hidden bg-gradient-to-br from-muted to-muted/50">
+              <div className="relative w-full h-full overflow-hidden bg-white/5 border border-white/10">
                 <img
                   src={photo.url}
                   alt={`Gallery image ${index + 1}`}
                   className="
                     w-full h-full object-cover 
-                    animate-ken-burns animate-parallax
+                    grayscale hover:grayscale-0
                     transition-all duration-1000 ease-out
-                    group-hover:scale-125 group-hover:rotate-6 group-hover:brightness-110 group-hover:saturate-150
+                    group-hover:scale-110
                   "
                   loading="lazy"
-                  style={{ 
-                    animationDelay: `${index * 0.2}s`,
-                    animationDuration: `${25 + (index % 8) * 4}s`,
-                  }}
                 />
                 
                 {/* Gradient Overlay on Hover */}
                 <div className="
                   absolute inset-0 
-                  bg-gradient-to-t from-primary/60 via-primary/20 to-transparent 
+                  bg-gradient-to-t from-[#A31414]/40 via-transparent to-transparent 
                   opacity-0 group-hover:opacity-100 
                   transition-all duration-500
-                  backdrop-blur-[2px]
+                  backdrop-blur-[1px]
                 " />
                 
                 {/* Animated border glow */}
                 <div 
                   className="
                     absolute inset-0 
-                    border-2 border-primary/20 rounded-lg 
-                    animate-pulse-border
-                    group-hover:border-primary/60 group-hover:shadow-inner
+                    border border-white/10 rounded-lg 
+                    group-hover:border-[#e49797]/40
                     transition-all duration-500
                   "
-                  style={{ 
-                    animationDelay: `${index * 0.25}s`,
-                  }}
                 />
 
                 {/* Corner accent on hover */}
                 <div className="
-                  absolute top-2 right-2 w-8 h-8 
-                  border-t-2 border-r-2 border-primary 
+                  absolute top-2 right-2 w-6 h-6 
+                  border-t-2 border-r-2 border-[#e49797] 
                   opacity-0 group-hover:opacity-100 
                   transition-all duration-500 
-                  group-hover:w-12 group-hover:h-12
+                  group-hover:w-8 group-hover:h-8
                 " />
                 <div className="
-                  absolute bottom-2 left-2 w-8 h-8 
-                  border-b-2 border-l-2 border-primary 
+                  absolute bottom-2 left-2 w-6 h-6 
+                  border-b-2 border-l-2 border-[#e49797] 
                   opacity-0 group-hover:opacity-100 
                   transition-all duration-500 delay-100
-                  group-hover:w-12 group-hover:h-12
+                  group-hover:w-8 group-hover:h-8
                 " />
               </div>
 
@@ -277,27 +268,13 @@ export function PhotoGallerySection() {
               <div 
                 className="
                   absolute -inset-2 
-                  bg-gradient-to-r from-primary/20 via-primary/40 to-primary/20 
+                  bg-gradient-to-r from-[#A31414]/10 via-[#e49797]/20 to-[#A31414]/10 
                   blur-xl opacity-0 
-                  animate-glow 
                   group-hover:opacity-100 group-hover:blur-2xl
                   transition-all duration-700
                   -z-10
                 "
-                style={{ 
-                  animationDelay: `${index * 0.35}s`,
-                }}
               />
-
-              {/* Shimmer effect on hover */}
-              <div className="
-                absolute inset-0 
-                bg-gradient-to-r from-transparent via-white/20 to-transparent 
-                translate-x-[-200%] 
-                group-hover:translate-x-[200%] 
-                transition-transform duration-1000 ease-out
-                skew-x-12
-              " />
             </div>
           ))}
         </div>
