@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { ExternalLink, Github, Globe, TrendingUp, Code, Palette } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { ScrollReveal } from '../animations/ScrollReveal';
 import { AnimatedHeading } from '../animations/AnimatedHeading';
 
@@ -110,24 +109,24 @@ export function MyWorkSection() {
   };
 
   return (
-    <section id="works" className="py-24 bg-[#111111] text-white border-t border-white/5 relative overflow-hidden">
-      <div className="container mx-auto px-4 lg:px-8">
+    <section id="works" className="py-14 bg-white text-[#121212] border-t border-black/5 relative overflow-hidden">
+      <div className="container-narrow">
         
         {/* Section Header */}
         <div className="text-center mb-16">
           <ScrollReveal delay={0.1}>
-            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider border border-[#e49797]/30 text-[#e49797] bg-[#e49797]/5 mb-4">
+            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider border border-[#FF5733]/25 text-[#FF5733] bg-[#FF5733]/5 mb-4">
               Portfolio
             </span>
           </ScrollReveal>
           <AnimatedHeading delay={0.2}>
             <h2 className="text-3xl md:text-5xl font-bold flex flex-col items-center justify-center gap-1">
-              <span className="font-serif font-medium text-white italic">My</span>
-              <span className="font-sans font-black uppercase tracking-tight text-[#e49797]">Work</span>
+              <span className="font-serif font-medium text-[#121212] italic">My</span>
+              <span className="font-sans font-black uppercase tracking-tight text-[#FF5733]">Work</span>
             </h2>
           </AnimatedHeading>
           <ScrollReveal delay={0.3}>
-            <p className="text-white/60 text-sm md:text-base max-w-xl mx-auto mt-4 font-sans leading-relaxed">
+            <p className="text-[#666666] text-sm md:text-base max-w-xl mx-auto mt-4 font-sans leading-relaxed">
               Explore my latest projects and successful campaigns
             </p>
           </ScrollReveal>
@@ -141,10 +140,10 @@ export function MyWorkSection() {
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 ${
                   isActive
-                    ? 'bg-[#e49797] text-[#1a0505] shadow-md scale-105'
-                    : 'border border-white/10 text-white/70 hover:text-white hover:border-white/30 bg-transparent'
+                    ? 'bg-[#121212] text-white shadow-sm scale-105'
+                    : 'border border-black/10 text-[#666666] hover:text-[#FF5733] hover:border-[#FF5733] bg-transparent'
                 }`}
               >
                 {category !== 'All' && getCategoryIcon(category)}
@@ -158,96 +157,96 @@ export function MyWorkSection() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProjects.map((project, index) => (
             <ScrollReveal key={project.id} delay={0.2 + index * 0.1} className="h-full">
-            <article
-              className="group h-full bg-white/5 border border-white/10 hover:border-[#e49797]/30 rounded-2xl overflow-hidden flex flex-col justify-between transition-all duration-300 hover:bg-white/10"
-            >
-              <div>
-                {/* Project Image or Placeholder */}
-                <div className="relative h-48 overflow-hidden bg-gradient-to-br from-[#A31414]/20 to-[#A31414]/5 border-b border-white/5">
-                  {project.image ? (
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-white/30">
-                      {getCategoryIcon(project.category)}
+              <article
+                className="group h-full bg-[#F9F9F7] border border-black/5 hover:border-[#FF5733]/30 rounded-2xl overflow-hidden flex flex-col justify-between transition-all duration-300 hover:shadow-md"
+              >
+                <div>
+                  {/* Project Image */}
+                  <div className="relative h-48 overflow-hidden bg-[#121212]/5 border-b border-black/5">
+                    {project.image ? (
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-black/10">
+                        {getCategoryIcon(project.category)}
+                      </div>
+                    )}
+                    {/* Category Badge */}
+                    <div className="absolute top-4 left-4">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border border-[#FF5733]/30 text-[#FF5733] bg-white/90 backdrop-blur-sm">
+                        {getCategoryIcon(project.category)}
+                        {project.category}
+                      </span>
                     </div>
-                  )}
-                  {/* Category Badge */}
-                  <div className="absolute top-4 left-4">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border border-[#e49797]/30 text-[#e49797] bg-[#111111]/80 backdrop-blur-sm">
-                      {getCategoryIcon(project.category)}
-                      {project.category}
-                    </span>
+                  </div>
+
+                  {/* Project Details */}
+                  <div className="p-6">
+                    <h3 className="text-lg font-bold mb-3 text-[#121212] group-hover:text-[#FF5733] transition-colors">
+                      {project.title}
+                    </h3>
+                    <p className="text-[#666666] text-xs md:text-sm mb-4 leading-relaxed line-clamp-3">
+                      {project.description}
+                    </p>
+
+                    {/* Metrics (for SEO projects) */}
+                    {project.metrics && project.metrics.length > 0 && (
+                      <div className="grid grid-cols-3 gap-2 mb-4 p-3 bg-[#FF5733]/5 rounded-xl border border-[#FF5733]/10">
+                        {project.metrics.map((metric, idx) => (
+                          <div key={idx} className="text-center">
+                            <p className="text-base font-black text-[#FF5733]">{metric.value}</p>
+                            <p className="text-[10px] text-[#666666]/70 uppercase font-medium">{metric.label}</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-1.5">
+                      {project.tags.slice(0, 3).map((tag, idx) => (
+                        <span
+                          key={idx}
+                          className="text-[10px] px-2.5 py-1 bg-[#FF5733]/5 text-[#FF5733] border border-[#FF5733]/15 rounded-full font-medium"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                      {project.tags.length > 3 && (
+                        <span className="text-[10px] px-2 py-0.5 bg-black/5 text-[#666666] border border-black/5 rounded-full">
+                          +{project.tags.length - 3}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
 
-                {/* Project Details */}
-                <div className="p-6">
-                  <h3 className="text-lg font-bold mb-3 text-white group-hover:text-[#e49797] transition-colors">
-                    {project.title}
-                  </h3>
-                  <p className="text-white/60 text-xs md:text-sm mb-4 leading-relaxed line-clamp-3">
-                    {project.description}
-                  </p>
-
-                  {/* Metrics (for SEO projects) */}
-                  {project.metrics && project.metrics.length > 0 && (
-                    <div className="grid grid-cols-3 gap-2 mb-4 p-3 bg-white/5 rounded-xl border border-white/5">
-                      {project.metrics.map((metric, idx) => (
-                        <div key={idx} className="text-center">
-                          <p className="text-base font-black text-[#e49797]">{metric.value}</p>
-                          <p className="text-[10px] text-white/40 uppercase font-medium">{metric.label}</p>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-1.5">
-                    {project.tags.slice(0, 3).map((tag, idx) => (
-                      <span
-                        key={idx}
-                        className="text-[10px] px-2.5 py-1 bg-[#e49797]/5 text-[#e49797] border border-[#e49797]/15 rounded-full font-medium"
+                {/* Action Links */}
+                <div className="p-6 pt-0 mt-4">
+                  <div className="flex gap-3 pt-4 border-t border-black/5">
+                    {project.liveUrl && (
+                      <button
+                        className="flex-1 py-2 px-4 rounded-xl border border-black/5 hover:border-[#FF5733]/30 hover:bg-[#FF5733]/5 text-[#666666] hover:text-[#FF5733] text-xs font-semibold flex items-center justify-center gap-1.5 transition-all"
+                        onClick={() => window.open(project.liveUrl, '_blank')}
                       >
-                        {tag}
-                      </span>
-                    ))}
-                    {project.tags.length > 3 && (
-                      <span className="text-[10px] px-2 py-0.5 bg-white/5 text-white/50 border border-white/10 rounded-full">
-                        +{project.tags.length - 3}
-                      </span>
+                        <ExternalLink className="w-3.5 h-3.5" />
+                        View Live
+                      </button>
+                    )}
+                    {project.githubUrl && (
+                      <button
+                        className="flex-1 py-2 px-4 rounded-xl border border-black/5 hover:border-[#FF5733]/30 hover:bg-[#FF5733]/5 text-[#666666] hover:text-[#FF5733] text-xs font-semibold flex items-center justify-center gap-1.5 transition-all"
+                        onClick={() => window.open(project.githubUrl, '_blank')}
+                      >
+                        <Github className="w-3.5 h-3.5" />
+                        Code
+                      </button>
                     )}
                   </div>
                 </div>
-              </div>
-
-              {/* Action Links */}
-              <div className="p-6 pt-0 mt-4">
-                <div className="flex gap-3 pt-4 border-t border-white/5">
-                  {project.liveUrl && (
-                    <button
-                      className="flex-1 py-2 px-4 rounded-xl border border-white/10 hover:border-[#e49797]/30 hover:bg-[#e49797]/5 text-white/70 hover:text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition-all"
-                      onClick={() => window.open(project.liveUrl, '_blank')}
-                    >
-                      <ExternalLink className="w-3.5 h-3.5" />
-                      View Live
-                    </button>
-                  )}
-                  {project.githubUrl && (
-                    <button
-                      className="flex-1 py-2 px-4 rounded-xl border border-white/10 hover:border-[#e49797]/30 hover:bg-[#e49797]/5 text-white/70 hover:text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition-all"
-                      onClick={() => window.open(project.githubUrl, '_blank')}
-                    >
-                      <Github className="w-3.5 h-3.5" />
-                      Code
-                    </button>
-                  )}
-                </div>
-              </div>
-            </article>
+              </article>
             </ScrollReveal>
           ))}
         </div>
@@ -255,11 +254,11 @@ export function MyWorkSection() {
         {/* Empty State */}
         {filteredProjects.length === 0 && (
           <div className="text-center py-20">
-            <p className="text-white/60 text-base mb-4">
+            <p className="text-[#666666] text-base mb-4">
               No projects found in this category yet.
             </p>
             <button
-              className="px-5 py-2.5 rounded-full border border-white/10 text-white/80 hover:text-white hover:border-white/30 text-xs font-bold uppercase tracking-wider"
+              className="px-5 py-2.5 rounded-full border border-black/10 text-[#666666] hover:text-[#FF5733] hover:border-[#FF5733] text-xs font-bold uppercase tracking-wider"
               onClick={() => setSelectedCategory('All')}
             >
               View All Projects

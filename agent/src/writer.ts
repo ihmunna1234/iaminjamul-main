@@ -3,10 +3,7 @@
  *
  * Takes a trending topic and generates a full, structured blog post
  * in the exact format used by the portfolio site's blogData.ts.
- */
-
-import { GoogleGenerativeAI } from '@google/generative-ai';
-import type { TrendingTopic } from './trends.js';
+ */import type { TrendingTopic } from './trends.js';
 
 // Must match the BlogPost interface in src/data/blogData.ts
 export interface GeneratedBlogPost {
@@ -56,7 +53,7 @@ const CATEGORY_IMAGES: Record<string, string[]> = {
   ],
   Freelancing: [
     'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=800&fit=crop',
     'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=400&fit=crop',
   ],
   Business: [
@@ -127,47 +124,62 @@ Rules:
 - Include exactly 1 list and 1 quote
 - tags must be 3-5 relevant keywords (no hashtags)
 - title must be original and engaging, NOT just the news headline
-- Do NOT include any text outside the JSON object
 `;
 
 export async function writeBlogPost(topic: TrendingTopic): Promise<GeneratedBlogPost> {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) throw new Error('GEMINI_API_KEY environment variable is not set');
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) throw new Error('OPENAI_API_KEY environment variable is not set');
 
-  const genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({
-    model: 'gemini-3.5-flash',
-    generationConfig: {
-      temperature: 0.8,
-      maxOutputTokens: 4096,
-      responseMimeType: 'application/json',
-    },
-  });
-
-  console.log(`  ✍️  Writing blog post about: "${topic.title}"`);
+  console.log(`  ✍️  Writing blog post using OpenAI about: "${topic.title}"`);
 
   const prompt = BLOG_PROMPT_TEMPLATE(topic);
-  const result = await model.generateContent(prompt);
-  const rawText = result.response.text().trim();
+  
+  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: 'gpt-4o',
+      response_format: { type: 'json_object' },
+      messages: [
+        {
+          role: 'system',
+          content: 'You are Injamul Hoque\'s blog writing assistant. You must output only a valid JSON object matching the requested schema.',
+        },
+        {
+          role: 'user',
+          content: prompt,
+        },
+      ],
+      temperature: 0.8,
+    }),
+  });
 
-  // Strip markdown code fences if Gemini wraps the JSON anyway
-  const jsonText = rawText
-    .replace(/^```json\n?/i, '')
-    .replace(/^```\n?/, '')
-    .replace(/\n?```$/, '')
-    .trim();
+  if (!response.ok) {
+    const errText = await response.text();
+    throw new Error(`OpenAI API failed: ${response.status} - ${errText}`);
+  }
+
+  const result = await response.json();
+  const jsonText = result.choices[0]?.message?.content?.trim();
+
+  if (!jsonText) {
+    throw new Error('OpenAI returned an empty response');
+  }
 
   let parsed: { title: string; excerpt: string; tags: string[]; content: ContentSection[] };
   try {
     parsed = JSON.parse(jsonText);
   } catch {
-    console.error('❌ Gemini returned invalid JSON:', jsonText.slice(0, 300));
-    throw new Error('Failed to parse Gemini response as JSON');
+    console.error('❌ OpenAI returned invalid JSON:', jsonText.slice(0, 300));
+    throw new Error('Failed to parse OpenAI response as JSON');
   }
 
   // Validate required fields
   if (!parsed.title || !parsed.excerpt || !parsed.content?.length) {
-    throw new Error('Gemini response missing required fields');
+    throw new Error('OpenAI response missing required fields');
   }
 
   const blogPost: GeneratedBlogPost = {

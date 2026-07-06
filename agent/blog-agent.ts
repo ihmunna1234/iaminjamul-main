@@ -7,7 +7,7 @@
  *   node blog-agent.ts --count=5 → Generate 5 posts instead of 3
  *
  * Required environment variables:
- *   GEMINI_API_KEY              → Get free at https://aistudio.google.com
+ *   OPENAI_API_KEY              → Get at https://platform.openai.com
  *   SUPABASE_URL                → From your Supabase project settings
  *   SUPABASE_SERVICE_ROLE_KEY   → From Supabase → Settings → API
  *   NEWS_API_KEY                → Get free at https://newsapi.org (optional)

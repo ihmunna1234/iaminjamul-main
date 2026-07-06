@@ -31,71 +31,124 @@ const experiences = [
 
 export function ExperienceSection() {
   return (
-    <section id="experience" className="py-24 bg-[#f7f7f7] text-black border-t border-black/5 relative overflow-hidden">
-      <div className="container mx-auto px-4 lg:px-8">
+    <section id="experience" className="py-14 bg-[#F9F9F7] text-[#121212] border-t border-black/5 relative overflow-hidden">
+      <div className="container-narrow">
         
         {/* Section Header */}
         <div className="text-center mb-16">
           <ScrollReveal delay={0.1}>
-            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider border border-[#A31414]/20 text-[#A31414] bg-[#A31414]/5 mb-4">
+            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider border border-[#FF5733]/25 text-[#FF5733] bg-[#FF5733]/5 mb-4">
               Experience
             </span>
           </ScrollReveal>
           <AnimatedHeading delay={0.2}>
             <h2 className="text-3xl md:text-5xl font-bold flex flex-col items-center justify-center gap-1">
-              <span className="font-serif font-medium text-black italic">My</span>
-              <span className="font-sans font-black uppercase tracking-tight text-[#A31414]">Professional Journey</span>
+              <span className="font-serif font-medium text-[#121212] italic">My</span>
+              <span className="font-sans font-black uppercase tracking-tight text-[#FF5733]">Professional Journey</span>
             </h2>
           </AnimatedHeading>
         </div>
 
-        {/* Experience Timeline */}
-        <div className="max-w-4xl mx-auto">
-          <div className="relative">
-            {/* Timeline line background */}
-            <div className="absolute left-0 md:left-1/2 transform md:-translate-x-px top-0 bottom-0 w-0.5 bg-[#A31414]/10" />
+        {/* Experience Timeline - Compact Two-Column Alternating Layout */}
+        <div className="relative max-w-4xl mx-auto">
+          {/* Central Timeline Line (hidden on mobile) */}
+          <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-black/10 hidden md:block transform -translate-x-1/2" />
+
+          {/* Left Line for Mobile Layout */}
+          <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-black/10 md:hidden" />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8">
             
-            {/* Timeline line animated drawing */}
-            <motion.div 
-              className="absolute left-0 md:left-1/2 transform md:-translate-x-px top-0 bottom-0 w-0.5 bg-[#A31414]"
-              initial={{ height: 0 }}
-              whileInView={{ height: '100%' }}
-              viewport={{ once: true, margin: '-100px' }}
-              transition={{ duration: 2, ease: 'easeInOut' }}
-            />
-
-            {experiences.map((exp, index) => (
-              <ScrollReveal
-                key={exp.title}
-                direction={index % 2 === 0 ? 'right' : 'left'}
-                delay={0.3 + index * 0.2}
-                className={`relative flex flex-col md:flex-row gap-8 mb-12 last:mb-0 ${
-                  index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
-                }`}
-              >
-                {/* Timeline dot */}
-                <div className="absolute left-0 md:left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full bg-[#A31414] border-4 border-[#f7f7f7] z-10" />
-
-                {/* Content */}
-                <div className={`md:w-1/2 pl-8 md:pl-0 ${index % 2 === 0 ? 'md:pr-12 md:text-right' : 'md:pl-12'}`}>
-                  <div className="bg-white border border-black/5 rounded-2xl p-6 shadow-sm hover:border-[#A31414]/30 hover:shadow-md transition-all duration-300">
-                    <div className={`flex flex-wrap items-center gap-3 mb-3 ${index % 2 === 0 ? 'md:justify-end' : ''}`}>
-                      <h3 className="text-lg font-bold text-black">{exp.title}</h3>
-                      <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#A31414]/5 text-[#A31414] border border-[#A31414]/15">
-                        {exp.duration}
-                      </span>
-                    </div>
-                    <p className="text-[#A31414] font-semibold text-sm mb-3">{exp.company}</p>
-                    <p className="text-black/60 text-xs md:text-sm leading-relaxed font-sans">
-                      {exp.description}
-                    </p>
+            {/* Left Column (Desktop) / Stacks normally on mobile */}
+            <div className="space-y-8">
+              {/* Card 1: Sales Officer */}
+              <ScrollReveal direction="left" delay={0.1} className="relative">
+                {/* Dot for Desktop (Right side of card) */}
+                <div className="absolute right-[-34px] top-6 w-4.5 h-4.5 rounded-full bg-[#FF5733] border-4 border-white z-10 hidden md:block transform translate-x-1/2 shadow-sm" />
+                {/* Dot for Mobile (Left side of container) */}
+                <div className="absolute left-[-30px] top-6 w-3.5 h-3.5 rounded-full bg-[#FF5733] border-4 border-white z-10 md:hidden transform -translate-x-1/2 shadow-sm" />
+                
+                <div className="bg-white border border-black/5 rounded-2xl p-6 hover:border-[#FF5733]/30 hover:shadow-md transition-all duration-300 shadow-sm ml-6 md:ml-0">
+                  <div className="flex flex-wrap items-center gap-3 mb-3">
+                    <h3 className="text-lg font-bold text-[#121212]">{experiences[0].title}</h3>
+                    <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#FF5733]/5 text-[#FF5733] border border-[#FF5733]/15">
+                      {experiences[0].duration}
+                    </span>
                   </div>
+                  <p className="text-[#FF5733] font-semibold text-sm mb-3">{experiences[0].company}</p>
+                  <p className="text-[#666666] text-xs md:text-sm leading-relaxed font-sans">
+                    {experiences[0].description}
+                  </p>
                 </div>
-
-                {/* Empty space for alternating layout */}
-                <div className="hidden md:block md:w-1/2" />
               </ScrollReveal>
-            ))}
+
+              {/* Card 3: SEO Expert */}
+              <ScrollReveal direction="left" delay={0.3} className="relative">
+                {/* Dot for Desktop (Right side of card) */}
+                <div className="absolute right-[-34px] top-6 w-4.5 h-4.5 rounded-full bg-[#FF5733] border-4 border-white z-10 hidden md:block transform translate-x-1/2 shadow-sm" />
+                {/* Dot for Mobile (Left side of container) */}
+                <div className="absolute left-[-30px] top-6 w-3.5 h-3.5 rounded-full bg-[#FF5733] border-4 border-white z-10 md:hidden transform -translate-x-1/2 shadow-sm" />
+                
+                <div className="bg-white border border-black/5 rounded-2xl p-6 hover:border-[#FF5733]/30 hover:shadow-md transition-all duration-300 shadow-sm ml-6 md:ml-0">
+                  <div className="flex flex-wrap items-center gap-3 mb-3">
+                    <h3 className="text-lg font-bold text-[#121212]">{experiences[2].title}</h3>
+                    <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#FF5733]/5 text-[#FF5733] border border-[#FF5733]/15">
+                      {experiences[2].duration}
+                    </span>
+                  </div>
+                  <p className="text-[#FF5733] font-semibold text-sm mb-3">{experiences[2].company}</p>
+                  <p className="text-[#666666] text-xs md:text-sm leading-relaxed font-sans">
+                    {experiences[2].description}
+                  </p>
+                </div>
+              </ScrollReveal>
+            </div>
+
+            {/* Right Column (Desktop) / Stacks normally on mobile */}
+            <div className="space-y-8 md:pt-16">
+              {/* Card 2: Education Consultant */}
+              <ScrollReveal direction="right" delay={0.2} className="relative">
+                {/* Dot for Desktop (Left side of card) */}
+                <div className="absolute left-[-34px] top-6 w-4.5 h-4.5 rounded-full bg-[#FF5733] border-4 border-white z-10 hidden md:block transform -translate-x-1/2 shadow-sm" />
+                {/* Dot for Mobile (Left side of container) */}
+                <div className="absolute left-[-30px] top-6 w-3.5 h-3.5 rounded-full bg-[#FF5733] border-4 border-white z-10 md:hidden transform -translate-x-1/2 shadow-sm" />
+                
+                <div className="bg-white border border-black/5 rounded-2xl p-6 hover:border-[#FF5733]/30 hover:shadow-md transition-all duration-300 shadow-sm ml-6 md:ml-0">
+                  <div className="flex flex-wrap items-center gap-3 mb-3">
+                    <h3 className="text-lg font-bold text-[#121212]">{experiences[1].title}</h3>
+                    <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#FF5733]/5 text-[#FF5733] border border-[#FF5733]/15">
+                      {experiences[1].duration}
+                    </span>
+                  </div>
+                  <p className="text-[#FF5733] font-semibold text-sm mb-3">{experiences[1].company}</p>
+                  <p className="text-[#666666] text-xs md:text-sm leading-relaxed font-sans">
+                    {experiences[1].description}
+                  </p>
+                </div>
+              </ScrollReveal>
+
+              {/* Card 4: Web Developer */}
+              <ScrollReveal direction="right" delay={0.4} className="relative">
+                {/* Dot for Desktop (Left side of card) */}
+                <div className="absolute left-[-34px] top-6 w-4.5 h-4.5 rounded-full bg-[#FF5733] border-4 border-white z-10 hidden md:block transform -translate-x-1/2 shadow-sm" />
+                {/* Dot for Mobile (Left side of container) */}
+                <div className="absolute left-[-30px] top-6 w-3.5 h-3.5 rounded-full bg-[#FF5733] border-4 border-white z-10 md:hidden transform -translate-x-1/2 shadow-sm" />
+                
+                <div className="bg-white border border-black/5 rounded-2xl p-6 hover:border-[#FF5733]/30 hover:shadow-md transition-all duration-300 shadow-sm ml-6 md:ml-0">
+                  <div className="flex flex-wrap items-center gap-3 mb-3">
+                    <h3 className="text-lg font-bold text-[#121212]">{experiences[3].title}</h3>
+                    <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#FF5733]/5 text-[#FF5733] border border-[#FF5733]/15">
+                      {experiences[3].duration}
+                    </span>
+                  </div>
+                  <p className="text-[#FF5733] font-semibold text-sm mb-3">{experiences[3].company}</p>
+                  <p className="text-[#666666] text-xs md:text-sm leading-relaxed font-sans">
+                    {experiences[3].description}
+                  </p>
+                </div>
+              </ScrollReveal>
+            </div>
+
           </div>
         </div>
 

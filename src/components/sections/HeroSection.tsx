@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ArrowUpRight } from 'lucide-react';
+import { Github, Linkedin, Twitter } from 'lucide-react';
 import heroPhoto from '@/assets/hero-photo.jpg';
 import { motion } from 'framer-motion';
 
@@ -12,7 +12,7 @@ export function HeroSection() {
     document.querySelector('#works')?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const professions = ['SEO Specialist', 'Web Developer', 'AI Expert'];
+  const professions = ['Web Developer', 'AI Expert', 'SEO Expert', 'Digital Marketer'];
   const [index, setIndex] = useState(0);
   const [fade, setFade] = useState(true);
 
@@ -22,8 +22,8 @@ export function HeroSection() {
       setTimeout(() => {
         setIndex((prev) => (prev + 1) % professions.length);
         setFade(true);
-      }, 500); // Duration of fade-out before switching text
-    }, 3000); // Switch every 3 seconds
+      }, 500);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, []);
@@ -31,96 +31,147 @@ export function HeroSection() {
   return (
     <section
       id="home"
-      className="min-h-screen bg-[#A31414] relative overflow-hidden flex flex-col justify-between pt-20 md:pt-24 pb-4 md:pb-6"
+      className="min-h-screen bg-[#F9F9F7] relative overflow-hidden flex flex-col justify-between"
     >
-      {/* Left-Side Vertical Social Icons */}
-      <div className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 flex flex-col gap-6 md:gap-8 text-white/70">
-        <a
-          href="https://instagram.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:text-white hover:scale-110 transition-all duration-200"
-          aria-label="Instagram"
-        >
-          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
-          </svg>
-        </a>
-        <a
-          href="https://twitter.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:text-white hover:scale-110 transition-all duration-200"
-          aria-label="Twitter"
-        >
-          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-          </svg>
-        </a>
-        <a
-          href="https://pinterest.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:text-white hover:scale-110 transition-all duration-200"
-          aria-label="Pinterest"
-        >
-          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.966 1.406-5.966s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738.098.119.112.224.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.631-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146 1.124.347 2.317.535 3.554.535 6.621 0 11.985-5.367 11.985-11.987C23.97 5.39 18.592.026 11.985.026L12.017 0z"/>
-          </svg>
-        </a>
-      </div>
+      {/* Subtle Grid Pattern */}
+      <div className="absolute inset-0 opacity-[0.015] pointer-events-none" style={{
+        backgroundImage: 'linear-gradient(#121212 1px, transparent 1px), linear-gradient(90deg, #121212 1px, transparent 1px)',
+        backgroundSize: '40px 40px'
+      }} />
 
-      {/* Main Grid Content */}
-      <div className="container mx-auto px-4 sm:px-6 md:px-12 lg:px-16 flex-1 flex flex-col justify-center my-auto">
-        <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 items-center justify-items-center lg:justify-items-stretch">
+      {/* Main Content */}
+      <div className="container-narrow flex-1 flex flex-col justify-center pt-28 pb-8">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           
-          {/* Left Column Text */}
-          <div className="z-10 flex flex-col justify-center select-none text-left pl-10 sm:pl-12 md:pl-16 lg:pl-0 w-full">
-            <h1 className="flex flex-col">
-              <span className="font-serif text-[2.8rem] sm:text-[3.8rem] md:text-[5.5rem] lg:text-[6.5rem] xl:text-[7.5rem] font-bold text-white leading-none tracking-tight">
-                I am
-              </span>
-              <span className="font-sans text-[4.2rem] sm:text-[5.8rem] md:text-[8rem] lg:text-[9.5rem] xl:text-[11.5rem] font-black text-black leading-none tracking-tighter -mt-1 sm:-mt-2 md:-mt-4">
-                Injamul
-              </span>
+          {/* Left Column - Profile Image with elegant circular border */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
+            className="relative flex justify-center items-center order-2 lg:order-1"
+          >
+            <div className="relative w-[260px] aspect-[4/5] sm:w-[320px] md:w-[380px]">
+              {/* Outer delicate border */}
+              <div className="absolute inset-0 rounded-3xl border border-[#FF5733]/20 scale-105" />
+              <div className="absolute inset-0 rounded-3xl border-2 border-dashed border-[#FF5733]/40 scale-102" />
+              
+              {/* Profile Image Wrap */}
+              <div className="absolute inset-0 rounded-3xl overflow-hidden border border-black/5 bg-white shadow-lg p-2">
+                <img
+                  src={heroPhoto}
+                  alt="Injamul Hoque Portrait"
+                  className="w-full h-full object-cover rounded-2xl filter contrast-[1.02]"
+                />
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Right Column - Text Content */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
+            className="z-10 flex flex-col justify-center text-center lg:text-left order-1 lg:order-2"
+          >
+            <p className="text-[#FF5733] text-sm md:text-base font-bold uppercase tracking-wider mb-3 font-sans">
+              Hello, I'm
+            </p>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-[#121212] leading-tight mb-4 font-serif">
+              Injamul Hoque
             </h1>
-            <p className="text-white text-xs sm:text-sm md:text-base lg:text-[1.5rem] xl:text-[1.7rem] font-medium tracking-wide mt-1 sm:mt-2 font-sans opacity-95 text-left w-full pl-1 md:pl-2 lg:pl-3 xl:pl-[14px] min-h-[1.5em] flex items-center justify-start">
-              <span className={`inline-block transition-all duration-500 transform ${
+            
+            {/* Dynamic Profession */}
+            <p className="text-base sm:text-lg md:text-xl font-medium mb-6 min-h-[2em] flex items-center justify-center lg:justify-start">
+              <span className="text-[#666666]">And I'm a </span>
+              <span className={`text-[#FF5733] ml-1.5 font-bold transition-all duration-500 transform ${
                 fade ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
               }`}>
                 {professions[index]}
               </span>
             </p>
-          </div>
 
-          {/* Right Column Illustration */}
-          <div className="relative flex justify-center lg:justify-end items-center lg:items-end w-full mt-4 lg:mt-0">
-            <motion.div 
-              initial={{ y: 50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 1, ease: 'easeOut', delay: 0.2 }}
-              className="w-[180px] sm:w-[220px] md:w-[320px] lg:w-[360px] xl:w-[420px] rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl border border-white/10 flex items-end relative"
-            >
-              <motion.div
-                className="absolute inset-0 bg-[#A31414] z-10"
-                initial={{ y: 0 }}
-                animate={{ y: '100%' }}
-                transition={{ duration: 0.8, ease: [0.7, 0, 0.3, 1], delay: 0.5 }}
-              />
-              <motion.img
-                src={heroPhoto}
-                alt="Injamul Hoque Portrait"
-                className="w-full h-auto object-cover"
-                initial={{ scale: 1.2 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 1.5, ease: 'easeOut', delay: 0.5 }}
-              />
-            </motion.div>
-          </div>
+            <p className="text-[#666666] text-sm sm:text-base leading-relaxed mb-8 max-w-lg mx-auto lg:mx-0 font-sans">
+              A versatile professional specializing in sales, education consulting, 
+              SEO, and web development. Turning ideas into functional, clean, and 
+              highly optimized digital experiences.
+            </p>
+
+            {/* Social Links */}
+            <div className="flex items-center gap-3 mb-8 justify-center lg:justify-start">
+              <a
+                href="https://github.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 border border-black/10 rounded-lg flex items-center justify-center text-[#666666] hover:text-[#FF5733] hover:border-[#FF5733] transition-all duration-200 bg-white shadow-sm"
+              >
+                <Github className="w-5 h-5" />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/injamul-hoque-164988224"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 border border-black/10 rounded-lg flex items-center justify-center text-[#666666] hover:text-[#FF5733] hover:border-[#FF5733] transition-all duration-200 bg-white shadow-sm"
+              >
+                <Linkedin className="w-5 h-5" />
+              </a>
+              <a
+                href="https://x.com/ihmunna212"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 border border-black/10 rounded-lg flex items-center justify-center text-[#666666] hover:text-[#FF5733] hover:border-[#FF5733] transition-all duration-200 bg-white shadow-sm"
+              >
+                <Twitter className="w-5 h-5" />
+              </a>
+            </div>
+
+            {/* CTAs */}
+            <div className="flex flex-wrap items-center gap-4 justify-center lg:justify-start">
+              <button
+                onClick={handleContactClick}
+                className="px-8 py-3 bg-[#121212] hover:bg-[#FF5733] text-white font-bold text-sm rounded-lg transition-all duration-200 shadow-sm"
+              >
+                Hire Me
+              </button>
+              <button
+                onClick={handleWorksClick}
+                className="px-8 py-3 bg-white border border-black/10 hover:bg-[#121212]/5 text-[#121212] font-bold text-sm rounded-lg transition-all duration-200 shadow-sm"
+              >
+                Contact Me
+              </button>
+            </div>
+          </motion.div>
 
         </div>
       </div>
 
+      {/* Stats Bar at Bottom */}
+      <div className="border-t border-black/5 bg-white/50 backdrop-blur-sm">
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-black/5">
+            {[
+              { value: '10+', label: 'Years of experience' },
+              { value: '30+', label: 'Projects completed' },
+              { value: '5+', label: 'Technologies mastered' },
+              { value: '100+', label: 'Satisfied Clients' },
+            ].map((stat, i) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.6 + i * 0.1 }}
+                className="py-6 md:py-8 px-4 flex items-center justify-center gap-3"
+              >
+                <span className="text-3xl md:text-4xl font-bold text-[#121212] font-sans tracking-tight">
+                  {stat.value}
+                </span>
+                <span className="text-[#666666] text-xs md:text-sm leading-tight">
+                  {stat.label}
+                </span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

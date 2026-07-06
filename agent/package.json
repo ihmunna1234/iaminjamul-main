@@ -8,7 +8,6 @@
     "dry-run": "tsx blog-agent.ts --dry-run"
   },
   "dependencies": {
-    "@google/generative-ai": "^0.21.0",
     "@supabase/supabase-js": "^2.49.8",
     "tsx": "^4.19.4"
   }

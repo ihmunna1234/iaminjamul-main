@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Award, ExternalLink, Calendar, Building2, CheckCircle2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -74,19 +73,19 @@ export function CertificationsSection() {
   };
 
   return (
-    <section id="certifications" className="py-24 bg-[#f7f7f7] text-black border-t border-black/5 relative overflow-hidden">
-      <div className="container mx-auto px-4 lg:px-8">
+    <section id="certifications" className="py-14 bg-[#F9F9F7] text-[#121212] border-t border-black/5 relative overflow-hidden">
+      <div className="container-narrow">
         
         {/* Section Header */}
         <div className="text-center mb-16">
-          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider border border-[#A31414]/20 text-[#A31414] bg-[#A31414]/5 mb-4">
+          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider border border-[#FF5733]/25 text-[#FF5733] bg-[#FF5733]/5 mb-4">
             Certifications
           </span>
           <h2 className="text-3xl md:text-5xl font-bold flex flex-col items-center justify-center gap-1">
-            <span className="font-serif font-medium text-black italic">Professional</span>
-            <span className="font-sans font-black uppercase tracking-tight text-[#A31414]">Certifications</span>
+            <span className="font-serif font-medium text-[#121212] italic">Professional</span>
+            <span className="font-sans font-black uppercase tracking-tight text-[#FF5733]">Certifications</span>
           </h2>
-          <p className="text-black/60 text-sm md:text-base max-w-xl mx-auto mt-4 font-sans leading-relaxed">
+          <p className="text-[#666666] text-sm md:text-base max-w-xl mx-auto mt-4 font-sans leading-relaxed">
             Continuous learning and professional development through industry-recognized certifications
           </p>
         </div>
@@ -97,11 +96,11 @@ export function CertificationsSection() {
             <div
               key={index}
               onClick={() => handleCertClick(cert)}
-              className="group bg-white border border-black/5 rounded-2xl p-6 shadow-sm hover:border-[#A31414]/30 hover:shadow-md transition-all duration-300 cursor-pointer flex flex-col justify-between"
+              className="group bg-white border border-black/5 rounded-2xl p-6 hover:border-[#FF5733]/30 hover:shadow-md transition-all duration-300 cursor-pointer flex flex-col justify-between shadow-sm"
             >
               <div>
-                {/* Certificate Icon/Image Placeholder */}
-                <div className="w-full aspect-video bg-[#A31414]/5 border border-[#A31414]/10 rounded-xl mb-4 flex items-center justify-center">
+                {/* Certificate Icon/Image */}
+                <div className="w-full aspect-video bg-[#FF5733]/5 border border-[#FF5733]/10 rounded-xl mb-4 flex items-center justify-center">
                   {cert.image ? (
                     <img 
                       src={cert.image} 
@@ -109,24 +108,24 @@ export function CertificationsSection() {
                       className="w-full h-full object-cover rounded-lg"
                     />
                   ) : (
-                    <Award className="w-10 h-10 text-[#A31414]" />
+                    <Award className="w-10 h-10 text-[#FF5733]" />
                   )}
                 </div>
 
                 {/* Certificate Details */}
-                <h3 className="font-bold text-base text-black group-hover:text-[#A31414] transition-colors mb-2 line-clamp-2">
+                <h3 className="font-bold text-base text-[#121212] group-hover:text-[#FF5733] transition-colors mb-2 line-clamp-2">
                   {cert.title}
                 </h3>
-                <p className="text-xs text-black/50 mb-1 font-medium">
+                <p className="text-xs text-[#666666] mb-1 font-medium">
                   {cert.issuer}
                 </p>
-                <p className="text-[10px] text-black/40 font-mono">
+                <p className="text-[10px] text-[#666666]/50 font-mono">
                   {cert.date}
                 </p>
               </div>
 
               {/* Click hint */}
-              <div className="text-xs text-[#A31414] font-semibold mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="text-xs text-[#FF5733] font-semibold mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
                 Details →
               </div>
             </div>
@@ -136,11 +135,11 @@ export function CertificationsSection() {
 
       {/* Certificate Details Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-white text-black border border-black/10 rounded-2xl">
+        <DialogContent className="max-w-[95vw] sm:max-w-3xl max-h-[85vh] overflow-y-auto bg-white text-[#121212] border border-black/5 rounded-2xl mx-2 sm:mx-auto shadow-xl">
           {selectedCert && (
             <>
               <DialogHeader>
-                <DialogTitle className="text-xl md:text-2xl font-black uppercase tracking-tight text-black pr-8 font-sans">
+                <DialogTitle className="text-xl md:text-2xl font-black uppercase tracking-tight text-[#121212] pr-8 font-sans">
                   {selectedCert.title}
                 </DialogTitle>
                 <DialogDescription className="sr-only">
@@ -150,7 +149,7 @@ export function CertificationsSection() {
 
               <div className="space-y-6 mt-4">
                 {/* Certificate Image/Icon */}
-                <div className="w-full aspect-video bg-[#A31414]/5 border border-[#A31414]/10 rounded-xl flex items-center justify-center">
+                <div className="w-full aspect-video bg-[#FF5733]/5 border border-[#FF5733]/10 rounded-xl flex items-center justify-center">
                   {selectedCert.image ? (
                     <img 
                       src={selectedCert.image} 
@@ -158,24 +157,24 @@ export function CertificationsSection() {
                       className="w-full h-full object-cover rounded-xl"
                     />
                   ) : (
-                    <Award className="w-20 h-20 text-[#A31414]" />
+                    <Award className="w-20 h-20 text-[#FF5733]" />
                   )}
                 </div>
 
                 {/* Issuer and Date Info */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="flex items-center gap-3 p-4 bg-[#f7f7f7] border border-black/5 rounded-xl">
-                    <Building2 className="w-5 h-5 text-[#A31414]" />
+                  <div className="flex items-center gap-3 p-4 bg-[#F9F9F7] border border-black/5 rounded-xl">
+                    <Building2 className="w-5 h-5 text-[#FF5733]" />
                     <div>
-                      <p className="text-[10px] text-black/40 uppercase font-medium">Issued By</p>
-                      <p className="font-bold text-sm text-black">{selectedCert.issuer}</p>
+                      <p className="text-[10px] text-[#666666]/50 uppercase font-medium">Issued By</p>
+                      <p className="font-bold text-sm text-[#121212]">{selectedCert.issuer}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 p-4 bg-[#f7f7f7] border border-black/5 rounded-xl">
-                    <Calendar className="w-5 h-5 text-[#A31414]" />
+                  <div className="flex items-center gap-3 p-4 bg-[#F9F9F7] border border-black/5 rounded-xl">
+                    <Calendar className="w-5 h-5 text-[#FF5733]" />
                     <div>
-                      <p className="text-[10px] text-black/40 uppercase font-medium">Issue Date</p>
-                      <p className="font-bold text-sm text-black">{selectedCert.date}</p>
+                      <p className="text-[10px] text-[#666666]/50 uppercase font-medium">Issue Date</p>
+                      <p className="font-bold text-sm text-[#121212]">{selectedCert.date}</p>
                     </div>
                   </div>
                 </div>
@@ -183,8 +182,8 @@ export function CertificationsSection() {
                 {/* Description */}
                 {selectedCert.description && (
                   <div>
-                    <h3 className="font-bold text-sm uppercase tracking-wide text-black/40 mb-2 font-sans">About This Certification</h3>
-                    <p className="text-black/70 text-sm leading-relaxed font-sans">
+                    <h3 className="font-bold text-sm uppercase tracking-wide text-[#666666]/50 mb-2 font-sans">About This Certification</h3>
+                    <p className="text-[#666666] text-sm leading-relaxed font-sans">
                       {selectedCert.description}
                     </p>
                   </div>
@@ -193,15 +192,15 @@ export function CertificationsSection() {
                 {/* Skills */}
                 {selectedCert.skills && selectedCert.skills.length > 0 && (
                   <div>
-                    <h3 className="font-bold text-sm uppercase tracking-wide text-black/40 mb-3 flex items-center gap-2 font-sans">
-                      <CheckCircle2 className="w-4 h-4 text-[#A31414]" />
+                    <h3 className="font-bold text-sm uppercase tracking-wide text-[#666666]/50 mb-3 flex items-center gap-2 font-sans">
+                      <CheckCircle2 className="w-4 h-4 text-[#FF5733]" />
                       Skills Covered
                     </h3>
                     <div className="flex flex-wrap gap-2">
                       {selectedCert.skills.map((skill, idx) => (
                         <span
                           key={idx}
-                          className="px-3 py-1 bg-[#A31414]/5 text-[#A31414] border border-[#A31414]/15 rounded-full text-xs font-semibold"
+                          className="px-3 py-1 bg-[#FF5733]/5 text-[#FF5733] border border-[#FF5733]/15 rounded-full text-xs font-semibold"
                         >
                           {skill}
                         </span>
@@ -214,14 +213,14 @@ export function CertificationsSection() {
                 <div className="border-t border-black/5 pt-6 space-y-3">
                   {selectedCert.credentialId && (
                     <div className="flex justify-between items-center text-xs">
-                      <span className="text-black/40 uppercase font-medium">Credential ID</span>
-                      <span className="font-mono font-bold text-black">{selectedCert.credentialId}</span>
+                      <span className="text-[#666666]/50 uppercase font-medium">Credential ID</span>
+                      <span className="font-mono font-bold text-[#121212]">{selectedCert.credentialId}</span>
                     </div>
                   )}
                   {selectedCert.validUntil && (
                     <div className="flex justify-between items-center text-xs">
-                      <span className="text-black/40 uppercase font-medium">Valid Until</span>
-                      <span className="font-bold text-black">{selectedCert.validUntil}</span>
+                      <span className="text-[#666666]/50 uppercase font-medium">Valid Until</span>
+                      <span className="font-bold text-[#121212]">{selectedCert.validUntil}</span>
                     </div>
                   )}
                 </div>
@@ -229,7 +228,7 @@ export function CertificationsSection() {
                 {/* View Credential Button */}
                 {selectedCert.credentialUrl && (
                   <button
-                    className="w-full py-3 px-4 rounded-xl bg-[#A31414] hover:bg-[#8e1111] text-white text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-md"
+                    className="w-full py-3 px-4 rounded-xl bg-[#121212] hover:bg-[#FF5733] text-white text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-sm"
                     onClick={() => window.open(selectedCert.credentialUrl, '_blank')}
                   >
                     View Credential

@@ -98,7 +98,7 @@ export function ChatWidget() {
     <>
       {/* Chat Window */}
       <div
-        className={`fixed bottom-24 right-6 w-80 sm:w-96 bg-card border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 origin-bottom-right z-50 ${
+        className={`fixed bottom-24 right-4 left-4 sm:left-auto sm:right-6 sm:w-80 md:w-96 bg-card border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 origin-bottom-right z-50 max-h-[80vh] ${
           isOpen ? 'scale-100 opacity-100 pointer-events-auto' : 'scale-50 opacity-0 pointer-events-none'
         }`}
       >

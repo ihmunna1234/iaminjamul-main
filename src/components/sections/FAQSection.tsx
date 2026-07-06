@@ -37,24 +37,24 @@ const faqs = [
 
 export function FAQSection() {
   return (
-    <section id="faq" className="py-24 bg-[#f7f7f7] text-black border-t border-black/5 relative overflow-hidden">
-      <div className="container mx-auto px-4 lg:px-8">
+    <section id="faq" className="py-14 bg-white text-[#121212] border-t border-black/5 relative overflow-hidden">
+      <div className="container-narrow">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           
           {/* Left side - Image with chat prompt */}
           <div className="relative">
-            <div className="bg-white border border-black/5 rounded-3xl p-4 md:p-6 shadow-sm relative overflow-hidden">
+            <div className="bg-[#F9F9F7] border border-black/5 rounded-3xl p-4 md:p-6 relative overflow-hidden">
               <div className="aspect-square max-w-sm mx-auto relative">
                 <img
                   src={FaqPhoto}
                   alt="Consultant"
-                  className="w-full h-full object-cover rounded-2xl grayscale hover:grayscale-0 transition-all duration-700"
+                  className="w-full h-full object-cover rounded-2xl filter contrast-[1.02]"
                 />
                 
-                {/* Chat bubble - Hidden on mobile, visible on desktop */}
+                {/* Chat bubble */}
                 <div className="hidden lg:block absolute top-4 right-0 translate-x-8 max-w-[220px]">
-                  <div className="bg-[#111111] text-white border border-white/10 rounded-2xl p-4 shadow-xl">
-                    <p className="text-[10px] text-white/50 uppercase font-semibold mb-1">
+                  <div className="bg-white text-[#121212] border border-black/5 rounded-2xl p-4 shadow-md">
+                    <p className="text-[10px] text-[#666666]/50 uppercase font-semibold mb-1">
                       Need help?
                     </p>
                     <p className="text-xs font-bold leading-normal">
@@ -66,7 +66,7 @@ export function FAQSection() {
                       href="https://wa.me/966582822130"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-12 h-12 bg-[#A31414] hover:bg-[#8e1111] rounded-2xl flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all"
+                      className="w-12 h-12 bg-[#FF5733] hover:bg-[#e04e2b] rounded-2xl flex items-center justify-center shadow-sm hover:scale-105 transition-all"
                     >
                       <MessageCircle className="w-5 h-5 text-white" />
                     </a>
@@ -78,12 +78,12 @@ export function FAQSection() {
 
           {/* Right side - FAQ */}
           <div>
-            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider border border-[#A31414]/20 text-[#A31414] bg-[#A31414]/5 mb-4">
+            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider border border-[#FF5733]/25 text-[#FF5733] bg-[#FF5733]/5 mb-4">
               FAQ
             </span>
             <h2 className="text-3xl md:text-5xl font-bold flex flex-col gap-1 mb-8">
-              <span className="font-serif font-medium text-black italic">Frequently Asked</span>
-              <span className="font-sans font-black uppercase tracking-tight text-[#A31414]">Questions</span>
+              <span className="font-serif font-medium text-[#121212] italic">Frequently Asked</span>
+              <span className="font-sans font-black uppercase tracking-tight text-[#FF5733]">Questions</span>
             </h2>
 
             <Accordion type="single" collapsible className="space-y-4">
@@ -91,12 +91,12 @@ export function FAQSection() {
                 <AccordionItem
                   key={index}
                   value={`item-${index}`}
-                  className="bg-white rounded-2xl border border-black/5 px-6 data-[state=open]:border-[#A31414]/30 shadow-sm transition-all duration-300"
+                  className="bg-[#F9F9F7] rounded-2xl border border-black/5 px-6 data-[state=open]:border-[#FF5733]/30 transition-all duration-200"
                 >
-                  <AccordionTrigger className="text-left text-sm md:text-base font-bold hover:no-underline py-4 text-black hover:text-[#A31414] transition-colors">
+                  <AccordionTrigger className="text-left text-sm md:text-base font-bold hover:no-underline py-4 text-[#121212] hover:text-[#FF5733] transition-colors">
                     {faq.question}
                   </AccordionTrigger>
-                  <AccordionContent className="text-black/60 text-xs md:text-sm font-sans leading-relaxed pb-4">
+                  <AccordionContent className="text-[#666666] text-xs md:text-sm font-sans leading-relaxed pb-4">
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>
