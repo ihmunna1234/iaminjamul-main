@@ -60,7 +60,7 @@ const getSizeClasses = (size: Photo['size']) => {
 
 export function PhotoGallerySection() {
   const [activePhotoIndex, setActivePhotoIndex] = useState<number | null>(null);
-  const [visibleCount, setVisibleCount] = useState(6);
+  const [visibleCount, setVisibleCount] = useState(15);
 
   useEffect(() => {
     if (activePhotoIndex === null) return;
@@ -78,7 +78,7 @@ export function PhotoGallerySection() {
   }, [activePhotoIndex]);
 
   return (
-    <section id="gallery" className="py-14 bg-[#F9F9F7] text-[#121212] border-t border-black/5 relative overflow-hidden">
+    <section id="gallery" className="py-14 bg-white text-[#121212] border-t border-black/5 relative overflow-hidden">
       <div className="container-narrow relative z-10">
         {/* Section Header */}
         <div className="text-center mb-16 animate-fade-in">
@@ -95,24 +95,57 @@ export function PhotoGallerySection() {
           </p>
         </div>
 
-        {/* Modern Pinterest-Style Masonry Grid */}
-        <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+        {/* Photo Grid with Original Masonry Layout */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-10 auto-rows-[100px] sm:auto-rows-[120px] gap-1" style={{ gridAutoFlow: 'dense' }}>
           {photos.slice(0, visibleCount).map((photo, index) => (
             <div
               key={photo.id}
               onClick={() => setActivePhotoIndex(index)}
-              className="break-inside-avoid relative overflow-hidden rounded-2xl cursor-pointer group bg-white border border-black/5 shadow-sm transition-all duration-500 hover:scale-[1.02] hover:shadow-xl"
+              className={`
+                group relative overflow-hidden rounded-lg cursor-pointer
+                ${index % 3 === 0 ? 'animate-float' : index % 3 === 1 ? 'animate-wave' : 'animate-bounce-subtle'}
+                ${index % 2 === 0 ? 'animate-rotate-3d' : 'animate-tilt'}
+                transition-all duration-700 ease-out
+                hover:scale-105 hover:z-20 hover:shadow-lg hover:-translate-y-1
+                ${getSizeClasses(photo.size)}
+              `}
+              style={{ 
+                animationDelay: `${index * 0.05}s`,
+                animationDuration: `${4 + (index % 4)}s`,
+              }}
             >
-              {/* Image */}
-              <img
-                src={photo.url}
-                alt={`Gallery image ${index + 1}`}
-                className="w-full h-auto object-cover grayscale group-hover:grayscale-0 transition-all duration-700 ease-out"
-                loading="lazy"
-              />
-              
-              {/* Elegant Hover Overlay */}
-              <div className="absolute inset-0 bg-[#121212]/0 group-hover:bg-[#121212]/5 transition-colors duration-500" />
+              {/* Image Container */}
+              <div className="relative w-full h-full overflow-hidden bg-black/5 border border-black/5 rounded-lg">
+                <img
+                  src={photo.url}
+                  alt={`Gallery image ${index + 1}`}
+                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 ease-out group-hover:scale-105"
+                  loading="lazy"
+                />
+                
+                {/* Clean coral overlay border on hover */}
+                <div className="
+                  absolute inset-0 
+                  border-2 border-transparent group-hover:border-[#FF5733]/40 rounded-lg 
+                  transition-all duration-500
+                " />
+
+                {/* Corners */}
+                <div className="
+                  absolute top-2 right-2 w-4 h-4 
+                  border-t border-r border-[#FF5733] 
+                  opacity-0 group-hover:opacity-100 
+                  transition-all duration-500 
+                  group-hover:w-6 group-hover:h-6
+                " />
+                <div className="
+                  absolute bottom-2 left-2 w-4 h-4 
+                  border-b border-l border-[#FF5733] 
+                  opacity-0 group-hover:opacity-100 
+                  transition-all duration-500
+                  group-hover:w-6 group-hover:h-6
+                " />
+              </div>
             </div>
           ))}
         </div>
@@ -121,7 +154,7 @@ export function PhotoGallerySection() {
         {visibleCount < photos.length && (
           <div className="flex justify-center mt-12">
             <button
-              onClick={() => setVisibleCount((prev) => Math.min(prev + 6, photos.length))}
+              onClick={() => setVisibleCount((prev) => Math.min(prev + 15, photos.length))}
               className="px-8 py-3 rounded-full border border-black/10 hover:border-[#FF5733] text-xs font-semibold uppercase tracking-widest text-[#121212] hover:text-[#FF5733] bg-transparent hover:bg-[#FF5733]/5 transition-all duration-300 active:scale-95 shadow-sm"
             >
               Load More Moments
