@@ -5,7 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import FaqPhoto from '@/assets/faq-photo.jpg';
+const FaqPhoto = '/gallery/faq-photo-0RudnkrF.jpg';
 
 const faqs = [
   {

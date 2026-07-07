@@ -28,7 +28,7 @@ export function Footer() {
           
           <div className="flex gap-6">
             <a
-              href="https://github.com"
+              href="https://github.com/ihmunna1234"
               target="_blank"
               rel="noopener noreferrer"
               className="text-white/40 hover:text-[#FF5733] transition-colors text-sm font-medium"
@@ -49,7 +49,7 @@ export function Footer() {
               rel="noopener noreferrer"
               className="text-white/40 hover:text-[#FF5733] transition-colors text-sm font-medium"
             >
-              Twitter
+              X
             </a>
             <a
               href="#"
