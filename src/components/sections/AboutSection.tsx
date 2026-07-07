@@ -53,7 +53,7 @@ export function AboutSection() {
         {/* Stats Row */}
         <div className="flex flex-wrap justify-center gap-6 md:gap-8 mb-16">
           {[
-            { value: '5+', label: 'Years of Experience' },
+            { value: '7+', label: 'Years of Experience' },
             { value: '100+', label: 'Projects Completed' },
             { value: '50+', label: 'Happy Clients' }
           ].map((stat, i) => (
@@ -70,7 +70,7 @@ export function AboutSection() {
         <ScrollReveal delay={0.4} className="max-w-3xl mx-auto text-center mb-20">
           <p className="text-[#666666] text-base md:text-lg leading-relaxed font-sans">
             As a versatile professional, I bring a unique combination of skills in sales, education consulting, 
-            SEO, and web development. With over 5 years of experience across these domains, I excel in 
+            SEO, and web development. With over 7 years of experience across these domains, I excel in 
             creating value-driven solutions that help businesses grow and individuals achieve their goals. 
             My passion lies in turning ideas into functional and aesthetically pleasing digital experiences.
           </p>

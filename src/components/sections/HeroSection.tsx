@@ -171,7 +171,7 @@ export function HeroSection() {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-black/5">
             {[
-              { value: '5+', label: 'Years of experience' },
+              { value: '7+', label: 'Years of experience' },
               { value: '100+', label: 'Projects completed' },
               { value: '10+', label: 'Technologies mastered' },
               { value: '50+', label: 'Satisfied Clients' },
