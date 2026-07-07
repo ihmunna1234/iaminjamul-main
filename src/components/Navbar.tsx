@@ -7,6 +7,7 @@ const navItems = [
   { name: 'Projects', href: '#works' },
   { name: 'Experience', href: '#experience' },
   { name: 'Expertise', href: '#certifications' },
+  { name: 'Articles', href: '#blog' },
   { name: 'Contact', href: '#contact' },
 ];
 
@@ -76,7 +77,7 @@ export function Navbar() {
             className="cursor-pointer"
           >
             <span className="font-sans text-xl md:text-2xl font-black text-[#121212] tracking-tight">
-              INJAMUL.EXE
+              Injamul.Hoque
             </span>
           </button>
 
@@ -103,7 +104,7 @@ export function Navbar() {
               onClick={() => handleNavClick('#contact')}
               className="px-6 py-2 bg-[#121212] hover:bg-[#FF5733] text-white font-semibold text-sm rounded-lg transition-all duration-300"
             >
-              Hire Me
+              Contact Me
             </button>
           </div>
 
@@ -139,7 +140,7 @@ export function Navbar() {
                 onClick={() => handleNavClick('#contact')}
                 className="mt-2 px-6 py-3 bg-[#121212] hover:bg-[#FF5733] text-white font-semibold text-sm rounded-lg transition-all duration-300 w-full"
               >
-                Hire Me
+                Contact Me
               </button>
             </div>
           </div>

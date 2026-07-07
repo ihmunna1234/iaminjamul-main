@@ -33,7 +33,7 @@ export function FreelanceCTASection() {
             onClick={handleHireClick}
             className="rounded-xl bg-[#121212] hover:bg-[#FF5733] text-white font-bold uppercase tracking-wider px-8 py-4 border-none flex items-center gap-1.5 transition-all text-xs shadow-sm"
           >
-            Hire Me Now
+            Contact Me
             <ArrowUpRight className="w-4 h-4" />
           </a>
         </div>

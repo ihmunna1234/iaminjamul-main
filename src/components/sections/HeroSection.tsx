@@ -130,13 +130,13 @@ export function HeroSection() {
                 onClick={handleContactClick}
                 className="px-8 py-3 bg-[#121212] hover:bg-[#FF5733] text-white font-bold text-sm rounded-lg transition-all duration-200 shadow-sm"
               >
-                Hire Me
+                Contact Me
               </button>
               <button
                 onClick={handleWorksClick}
                 className="px-8 py-3 bg-white border border-black/10 hover:bg-[#121212]/5 text-[#121212] font-bold text-sm rounded-lg transition-all duration-200 shadow-sm"
               >
-                Contact Me
+                My Work
               </button>
             </div>
           </motion.div>

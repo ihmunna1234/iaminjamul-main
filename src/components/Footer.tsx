@@ -17,7 +17,7 @@ export function Footer() {
               className="cursor-pointer"
             >
               <span className="font-sans text-xl font-black text-white tracking-tight">
-                INJAMUL.EXE
+                Injamul.Hoque
               </span>
             </button>
           </div>
