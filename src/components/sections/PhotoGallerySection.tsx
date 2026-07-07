@@ -6,39 +6,40 @@ interface Photo {
   id: string;
   url: string;
   size: 'small' | 'medium' | 'large' | 'wide' | 'tall';
+  alt: string;
 }
 
 const photos: Photo[] = [
-  { id: '1', url: '/gallery/1-0ATCqrfv.jpg', size: 'tall' },
-  { id: '2', url: '/gallery/2-Bpg1KHjT.jpeg', size: 'small' },
-  { id: '3', url: '/gallery/3-B_6OFn_M.jpg', size: 'small' },
-  { id: '4', url: '/gallery/4-CWrJ3nQz.jpg', size: 'medium' },
-  { id: '5', url: '/gallery/5-w2riCHlQ.JPG', size: 'tall' },
-  { id: '6', url: '/gallery/6-B__QxILO.jpg', size: 'large' },
-  { id: '7', url: '/gallery/7-j-CioVMA.JPG', size: 'small' },
-  { id: '8', url: '/gallery/8-wWJj3kHl.JPG', size: 'small' },
-  { id: '9', url: '/gallery/9-BoUC57mB.JPG', size: 'medium' },
-  { id: '10', url: '/gallery/10-C5SZoduo.jpeg', size: 'tall' },
-  { id: '11', url: '/gallery/11-DwY-WwMD.jpg', size: 'small' },
-  { id: '12', url: '/gallery/12-DE-B88Me.jpg', size: 'small' },
-  { id: '13', url: '/gallery/13-BzDe6psW.JPG', size: 'tall' },
-  { id: '14', url: '/gallery/14-DQ__tjpG.JPG', size: 'small' },
-  { id: '15', url: '/gallery/15-BGiMwb7v.jpg', size: 'medium' },
-  { id: '16', url: '/gallery/16-CbH_W_Dp.jpg', size: 'large' },
-  { id: '17', url: '/gallery/17-B_micVdt.jpg', size: 'small' },
-  { id: '18', url: '/gallery/18-BnGlOaRa.jpg', size: 'tall' },
-  { id: '19', url: '/gallery/19-CEMACwLZ.jpg', size: 'small' },
-  { id: '20', url: '/gallery/20-ChRvQ5tf.jpg', size: 'medium' },
-  { id: '21', url: '/gallery/21-DzqM7zLO.jpg', size: 'small' },
-  { id: '22', url: '/gallery/22-DA4QcpuI.jpg', size: 'tall' },
-  { id: '23', url: '/gallery/23-DcSS8Lyx.jpg', size: 'small' },
-  { id: '24', url: '/gallery/24--jmMlipw.jpg', size: 'small' },
-  { id: '25', url: '/gallery/25-DcyTlOwa.jpg', size: 'medium' },
-  { id: '26', url: '/gallery/26-B3kBGXrm.JPG', size: 'tall' },
-  { id: '27', url: '/gallery/27-D3biaTj1.jpeg', size: 'small' },
-  { id: '28', url: '/gallery/28-hMt09TjC.jpeg', size: 'small' },
-  { id: '29', url: '/gallery/29-CojuHBHR.jpg', size: 'medium' },
-  { id: '30', url: '/gallery/30-aPQr6BIe.jpeg', size: 'medium' },
+  { id: '1', url: '/gallery/1-0ATCqrfv.jpg', size: 'tall', alt: 'Injamul Hoque professional portrait' },
+  { id: '2', url: '/gallery/2-Bpg1KHjT.jpeg', size: 'small', alt: 'Outdoor photography session' },
+  { id: '3', url: '/gallery/3-B_6OFn_M.jpg', size: 'small', alt: 'Creative workspace setup' },
+  { id: '4', url: '/gallery/4-CWrJ3nQz.jpg', size: 'medium', alt: 'Team collaboration moment' },
+  { id: '5', url: '/gallery/5-w2riCHlQ.JPG', size: 'tall', alt: 'Injamul at a professional event' },
+  { id: '6', url: '/gallery/6-B__QxILO.jpg', size: 'large', alt: 'Scenic landscape photography' },
+  { id: '7', url: '/gallery/7-j-CioVMA.JPG', size: 'small', alt: 'Behind the scenes at work' },
+  { id: '8', url: '/gallery/8-wWJj3kHl.JPG', size: 'small', alt: 'Candid moment during project work' },
+  { id: '9', url: '/gallery/9-BoUC57mB.JPG', size: 'medium', alt: 'Professional networking event' },
+  { id: '10', url: '/gallery/10-C5SZoduo.jpeg', size: 'tall', alt: 'Injamul Hoque at conference' },
+  { id: '11', url: '/gallery/11-DwY-WwMD.jpg', size: 'small', alt: 'Urban photography capture' },
+  { id: '12', url: '/gallery/12-DE-B88Me.jpg', size: 'small', alt: 'Lifestyle and travel moment' },
+  { id: '13', url: '/gallery/13-BzDe6psW.JPG', size: 'tall', alt: 'Injamul presenting at event' },
+  { id: '14', url: '/gallery/14-DQ__tjpG.JPG', size: 'small', alt: 'Team building activity' },
+  { id: '15', url: '/gallery/15-BGiMwb7v.jpg', size: 'medium', alt: 'Creative portrait photography' },
+  { id: '16', url: '/gallery/16-CbH_W_Dp.jpg', size: 'large', alt: 'Nature and landscape view' },
+  { id: '17', url: '/gallery/17-B_micVdt.jpg', size: 'small', alt: 'Casual outdoor photo' },
+  { id: '18', url: '/gallery/18-BnGlOaRa.jpg', size: 'tall', alt: 'Injamul Hoque editorial portrait' },
+  { id: '19', url: '/gallery/19-CEMACwLZ.jpg', size: 'small', alt: 'City exploration photography' },
+  { id: '20', url: '/gallery/20-ChRvQ5tf.jpg', size: 'medium', alt: 'Professional headshot' },
+  { id: '21', url: '/gallery/21-DzqM7zLO.jpg', size: 'small', alt: 'Adventure and travel photo' },
+  { id: '22', url: '/gallery/22-DA4QcpuI.jpg', size: 'tall', alt: 'Injamul at cultural event' },
+  { id: '23', url: '/gallery/23-DcSS8Lyx.jpg', size: 'small', alt: 'Street photography moment' },
+  { id: '24', url: '/gallery/24--jmMlipw.jpg', size: 'small', alt: 'Friends and community gathering' },
+  { id: '25', url: '/gallery/25-DcyTlOwa.jpg', size: 'medium', alt: 'Scenic view during travel' },
+  { id: '26', url: '/gallery/26-B3kBGXrm.JPG', size: 'tall', alt: 'Injamul Hoque formal portrait' },
+  { id: '27', url: '/gallery/27-D3biaTj1.jpeg', size: 'small', alt: 'Casual lifestyle photo' },
+  { id: '28', url: '/gallery/28-hMt09TjC.jpeg', size: 'small', alt: 'Memorable group photo' },
+  { id: '29', url: '/gallery/29-CojuHBHR.jpg', size: 'medium', alt: 'Creative content photoshoot' },
+  { id: '30', url: '/gallery/30-aPQr6BIe.jpeg', size: 'medium', alt: 'Personal milestone celebration' },
 ];
 
 const getSizeClasses = (size: Photo['size']) => {
@@ -118,7 +119,7 @@ export function PhotoGallerySection() {
               <div className="relative w-full h-full overflow-hidden bg-black/5 border border-black/5 rounded-lg">
                 <img
                   src={photo.url}
-                  alt={`Gallery image ${index + 1}`}
+                  alt={photo.alt}
                   className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 ease-out group-hover:scale-105"
                   loading="lazy"
                 />

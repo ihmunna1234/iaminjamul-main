@@ -14,7 +14,7 @@ export function Preloader() {
       className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0c0c0e] select-none"
     >
       {/* Background radial glow */}
-      <div className="absolute inset-0 bg-radial-glow pointer-events-none opacity-20" />
+      <div className="absolute inset-0 pointer-events-none opacity-20" style={{ background: 'radial-gradient(ellipse at center, rgba(255,87,51,0.15) 0%, transparent 70%)' }} />
 
       <div className="relative z-10 flex flex-col items-center max-w-sm w-full px-6">
         {/* Profile Image with delicate custom border */}

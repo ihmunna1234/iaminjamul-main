@@ -31,6 +31,7 @@ export function Footer() {
               href="https://github.com/ihmunna1234"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="GitHub"
               className="text-white/40 hover:text-[#FF5733] transition-colors text-sm font-medium"
             >
               GitHub
@@ -39,6 +40,7 @@ export function Footer() {
               href="https://www.linkedin.com/in/injamul-hoque-164988224"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="LinkedIn"
               className="text-white/40 hover:text-[#FF5733] transition-colors text-sm font-medium"
             >
               LinkedIn
@@ -47,15 +49,10 @@ export function Footer() {
               href="https://x.com/ihmunna212"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="X (Twitter)"
               className="text-white/40 hover:text-[#FF5733] transition-colors text-sm font-medium"
             >
               X
-            </a>
-            <a
-              href="#"
-              className="text-white/40 hover:text-[#FF5733] transition-colors text-sm font-medium"
-            >
-              ReadCV
             </a>
           </div>
         </div>

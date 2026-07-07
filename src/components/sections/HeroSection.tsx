@@ -101,6 +101,7 @@ export function HeroSection() {
                 href="https://github.com/ihmunna1234"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="GitHub"
                 className="w-10 h-10 border border-black/10 rounded-lg flex items-center justify-center text-[#666666] hover:text-[#FF5733] hover:border-[#FF5733] transition-all duration-200 bg-white shadow-sm"
               >
                 <Github className="w-5 h-5" />
@@ -109,6 +110,7 @@ export function HeroSection() {
                 href="https://www.linkedin.com/in/injamul-hoque-164988224"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="LinkedIn"
                 className="w-10 h-10 border border-black/10 rounded-lg flex items-center justify-center text-[#666666] hover:text-[#FF5733] hover:border-[#FF5733] transition-all duration-200 bg-white shadow-sm"
               >
                 <Linkedin className="w-5 h-5" />
@@ -117,6 +119,7 @@ export function HeroSection() {
                 href="https://x.com/ihmunna212"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="X (Twitter)"
                 className="w-10 h-10 border border-black/10 rounded-lg flex items-center justify-center text-[#666666] hover:text-[#FF5733] hover:border-[#FF5733] transition-all duration-200 bg-white shadow-sm"
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -127,6 +130,7 @@ export function HeroSection() {
                 href="https://www.facebook.com/profile.php?id=100068977550578"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Facebook"
                 className="w-10 h-10 border border-black/10 rounded-lg flex items-center justify-center text-[#666666] hover:text-[#FF5733] hover:border-[#FF5733] transition-all duration-200 bg-white shadow-sm"
               >
                 <Facebook className="w-5 h-5" />
@@ -135,6 +139,7 @@ export function HeroSection() {
                 href="https://www.instagram.com/ihmunna212/"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Instagram"
                 className="w-10 h-10 border border-black/10 rounded-lg flex items-center justify-center text-[#666666] hover:text-[#FF5733] hover:border-[#FF5733] transition-all duration-200 bg-white shadow-sm"
               >
                 <Instagram className="w-5 h-5" />
@@ -166,10 +171,10 @@ export function HeroSection() {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-black/5">
             {[
-              { value: '10+', label: 'Years of experience' },
-              { value: '30+', label: 'Projects completed' },
-              { value: '5+', label: 'Technologies mastered' },
-              { value: '100+', label: 'Satisfied Clients' },
+              { value: '5+', label: 'Years of experience' },
+              { value: '100+', label: 'Projects completed' },
+              { value: '10+', label: 'Technologies mastered' },
+              { value: '50+', label: 'Satisfied Clients' },
             ].map((stat, i) => (
               <motion.div
                 key={stat.label}
