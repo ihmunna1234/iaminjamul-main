@@ -61,7 +61,7 @@ const getSizeClasses = (size: Photo['size']) => {
 
 export function PhotoGallerySection() {
   const [activePhotoIndex, setActivePhotoIndex] = useState<number | null>(null);
-  const [visibleCount, setVisibleCount] = useState(15);
+  const [visibleCount, setVisibleCount] = useState(photos.length);
 
   useEffect(() => {
     if (activePhotoIndex === null) return;
@@ -150,18 +150,6 @@ export function PhotoGallerySection() {
             </div>
           ))}
         </div>
-
-        {/* Load More Button */}
-        {visibleCount < photos.length && (
-          <div className="flex justify-center mt-12">
-            <button
-              onClick={() => setVisibleCount((prev) => Math.min(prev + 15, photos.length))}
-              className="px-8 py-3 rounded-full border border-black/10 hover:border-[#FF5733] text-xs font-semibold uppercase tracking-widest text-[#121212] hover:text-[#FF5733] bg-transparent hover:bg-[#FF5733]/5 transition-all duration-300 active:scale-95 shadow-sm"
-            >
-              Load More Moments
-            </button>
-          </div>
-        )}
       </div>
 
       {/* Lightbox Modal Gallery */}
