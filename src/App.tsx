@@ -9,6 +9,7 @@ import BlogPost from "./pages/BlogPost";
 import AIAdmin from "./pages/AIAdmin";
 import NotFound from "./pages/NotFound";
 import { ChatWidget } from "./components/ChatWidget";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +29,7 @@ const App = () => (
         </Routes>
         <ChatWidget />
       </BrowserRouter>
+      <SpeedInsights />
     </TooltipProvider>
   </QueryClientProvider>
 );
