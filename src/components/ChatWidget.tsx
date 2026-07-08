@@ -523,7 +523,11 @@ Reply to: ${lead.email}`,
           isDarkMode ? 'bg-[#1e1e1e] border-white/5' : 'bg-[#F9F9F7] border-black/5'
         }`}>
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-[#FF5733] flex items-center justify-center shadow-md shadow-[#FF5733]/15">
+            <div 
+              onDoubleClick={() => setShowSettings(!showSettings)}
+              className="w-9 h-9 rounded-xl bg-[#FF5733] flex items-center justify-center shadow-md shadow-[#FF5733]/15 cursor-pointer select-none"
+              title="Double-click for developer settings"
+            >
               <Bot className="w-5 h-5 text-white" />
             </div>
             <div>
@@ -547,19 +551,6 @@ Reply to: ${lead.email}`,
               title={isDarkMode ? 'Switch to Light Chat' : 'Switch to Dark Chat'}
             >
               {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </button>
-            
-            {/* Settings trigger */}
-            <button
-              onClick={() => setShowSettings(!showSettings)}
-              className={`p-2 rounded-lg transition-colors ${
-                showSettings 
-                  ? 'bg-[#FF5733]/10 text-[#FF5733]' 
-                  : isDarkMode ? 'hover:bg-white/5 text-white/70' : 'hover:bg-black/5 text-[#666666]'
-              }`}
-              title="AI Settings"
-            >
-              <Settings className="w-4 h-4" />
             </button>
             
             {/* Close */}
