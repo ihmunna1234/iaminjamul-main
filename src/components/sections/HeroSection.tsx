@@ -8,10 +8,6 @@ export function HeroSection() {
     document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleWorksClick = () => {
-    document.querySelector('#works')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   const professions = ['Web Developer', 'AI Expert', 'SEO Expert', 'Digital Marketer'];
   const [index, setIndex] = useState(0);
   const [fade, setFade] = useState(true);
@@ -153,12 +149,6 @@ export function HeroSection() {
                 className="px-8 py-3 bg-[#121212] hover:bg-[#FF5733] text-white font-bold text-sm rounded-lg transition-all duration-200 shadow-sm"
               >
                 Contact Me
-              </button>
-              <button
-                onClick={handleWorksClick}
-                className="px-8 py-3 bg-white border border-black/10 hover:bg-[#121212]/5 text-[#121212] font-bold text-sm rounded-lg transition-all duration-200 shadow-sm"
-              >
-                My Work
               </button>
             </div>
           </motion.div>
