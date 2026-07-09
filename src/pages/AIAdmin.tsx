@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { 
   Users, 
@@ -77,7 +77,7 @@ export default function AIAdmin() {
   }, []);
 
   // Fetch dashboard data
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
       if (isSupabaseConfigured && supabase) {
@@ -105,8 +105,8 @@ export default function AIAdmin() {
         const localConvs = JSON.parse(localStorage.getItem('ai_local_conversations') || '[]');
         
         // Sort
-        localLeads.sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-        localConvs.sort((a: any, b: any) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
+        localLeads.sort((a: Lead, b: Lead) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+        localConvs.sort((a: Conversation, b: Conversation) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
         
         setLeads(localLeads);
         setConversations(localConvs);
@@ -116,17 +116,17 @@ export default function AIAdmin() {
           description: 'Supabase is not configured. Displaying local data from this browser.',
         });
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error fetching admin data:', error);
       toast({
         title: 'Error loading data',
-        description: error.message || 'Could not fetch dashboard contents.',
+        description: error instanceof Error ? error.message : 'Could not fetch dashboard contents.',
         variant: 'destructive',
       });
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [toast]);
 
   // Fetch messages for a specific conversation
   const fetchMessagesForConversation = async (conv: Conversation) => {
@@ -144,11 +144,11 @@ export default function AIAdmin() {
       } else {
         // LocalStorage fallback for messages
         const allLocalMsgs = JSON.parse(localStorage.getItem('ai_local_messages') || '[]');
-        const filteredMsgs = allLocalMsgs.filter((msg: any) => msg.conversation_id === conv.id);
-        filteredMsgs.sort((a: any, b: any) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+        const filteredMsgs = allLocalMsgs.filter((msg: Message) => msg.conversation_id === conv.id);
+        filteredMsgs.sort((a: Message, b: Message) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
         setMessages(filteredMsgs);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error fetching conversation messages:', error);
       toast({
         title: 'Error',
@@ -163,7 +163,7 @@ export default function AIAdmin() {
     if (isAuthenticated) {
       fetchData();
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, fetchData]);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();

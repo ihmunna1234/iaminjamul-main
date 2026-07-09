@@ -137,7 +137,7 @@ export function ChatWidget() {
 
         if (uuid) {
           // Update existing
-          const updateData: any = { 
+          const updateData: Record<string, string | number | boolean | null> = { 
             messages_count: msgCount,
             updated_at: new Date().toISOString()
           };
@@ -171,7 +171,7 @@ export function ChatWidget() {
       } else {
         // LocalStorage fallback for conversation session
         const localConvs = JSON.parse(localStorage.getItem('ai_local_conversations') || '[]');
-        const existingIdx = localConvs.findIndex((c: any) => c.session_id === sessionId);
+        const existingIdx = localConvs.findIndex((c: Record<string, unknown>) => c.session_id === sessionId);
         
         const now = new Date().toISOString();
         if (existingIdx > -1) {
@@ -332,7 +332,7 @@ Reply to: ${lead.email}`,
         description: `Project details for ${lead.name} submitted successfully.`,
       });
 
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.error('Lead submission failed:', e);
       toast({
         title: 'Lead Saved Locally',
@@ -432,13 +432,13 @@ Reply to: ${lead.email}`,
       await syncConversation(nextMsgs.length);
       await saveMessageRecord('assistant', aiResponse.content);
 
-    } catch (error: any) {
+    } catch (error: unknown) {
       let errorMsg = "I'm sorry, I'm experiencing connectivity issues connecting to my AI core. Please try again later or reach out to Injamul directly!";
       
-      if (error.message === 'API_KEY_MISSING') {
+      if (error instanceof Error && error.message === 'API_KEY_MISSING') {
         errorMsg = "⚠️ OpenAI API Key is not configured. Please open the settings panel (gear icon at the top) and input an API key to activate my intelligence.";
         setShowSettings(true);
-      } else if (error.message === 'API_KEY_INVALID') {
+      } else if (error instanceof Error && error.message === 'API_KEY_INVALID') {
         errorMsg = "❌ The OpenAI API key provided is invalid. Please check your credentials in the settings panel (gear icon above) and try again.";
         setShowSettings(true);
       } else {

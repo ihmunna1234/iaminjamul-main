@@ -12,6 +12,7 @@ export interface GeneratedBlogPost {
   category: string;
   tags: string[];
   image: string;
+  imageBuffer?: ArrayBuffer;
   readTime: string;
   author: string;
   authorRole: string;
@@ -73,7 +74,48 @@ const AUTHOR_ROLES: Record<string, string> = {
   Business: 'Business Consultant',
 };
 
-function pickImage(category: string): string {
+async function generateImage(title: string, category: string, apiKey: string): Promise<ArrayBuffer | null> {
+  console.log(`  🎨  Generating image for: "${title}"`);
+  
+  try {
+    const response = await fetch('https://api.openai.com/v1/images/generations', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: 'dall-e-3',
+        prompt: `A modern, high-quality, vibrant flat illustration representing the concept of: ${title}. Premium aesthetic. No text in the image.`,
+        n: 1,
+        size: '1024x1024',
+        response_format: 'b64_json',
+      }),
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      console.error(`❌ OpenAI Image generation failed: ${response.status} - ${errText}`);
+      return null;
+    }
+
+    const result = await response.json();
+    const b64 = result.data[0].b64_json;
+    
+    // Convert base64 to ArrayBuffer
+    const binaryString = atob(b64);
+    const bytes = new Uint8Array(binaryString.length);
+    for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+    }
+    return bytes.buffer;
+  } catch (err) {
+    console.error(`❌ Error generating image:`, err);
+    return null;
+  }
+}
+
+function pickFallbackImage(category: string): string {
   const images = CATEGORY_IMAGES[category] || CATEGORY_IMAGES['Technology'];
   return images[Math.floor(Math.random() * images.length)];
 }
@@ -182,12 +224,16 @@ export async function writeBlogPost(topic: TrendingTopic): Promise<GeneratedBlog
     throw new Error('OpenAI response missing required fields');
   }
 
+  const imageBuffer = await generateImage(parsed.title, topic.category, apiKey);
+  const fallbackImage = pickFallbackImage(topic.category);
+
   const blogPost: GeneratedBlogPost = {
     title: parsed.title,
     excerpt: parsed.excerpt,
     category: topic.category,
     tags: parsed.tags || [topic.category],
-    image: pickImage(topic.category),
+    image: fallbackImage, // Will be overwritten if imageBuffer is uploaded successfully
+    imageBuffer: imageBuffer || undefined,
     readTime: estimateReadTime(parsed.content),
     author: 'Injamul Hoque',
     authorRole: AUTHOR_ROLES[topic.category] || 'Digital Professional',

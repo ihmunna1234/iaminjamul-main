@@ -1,9 +1,9 @@
 declare module "class-variance-authority" {
-  export const cva: (...args: any[]) => any;
-  export type VariantProps<T> = any;
+  export const cva: (...args: unknown[]) => unknown;
+  export type VariantProps<T> = unknown;
 }
 declare module "class-variance-authority" {
-  type ClassValue = string | number | boolean | null | undefined | ClassValue[] | { [key: string]: any };
+  type ClassValue = string | number | boolean | null | undefined | ClassValue[] | { [key: string]: unknown };
 
   type CVAVariants = Record<string, Record<string, ClassValue>>;
 
@@ -15,9 +15,9 @@ declare module "class-variance-authority" {
     >;
   };
 
-  export type VariantProps<Component extends (...args: any) => any> = Component extends (
+  export type VariantProps<Component extends (...args: unknown[]) => unknown> = Component extends (
     props: infer P,
-  ) => any
+  ) => unknown
     ? Omit<P, "class" | "className">
     : never;
 

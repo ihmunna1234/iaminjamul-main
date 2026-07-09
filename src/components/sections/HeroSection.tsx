@@ -3,12 +3,13 @@ import { Github, Linkedin, Facebook, Instagram } from 'lucide-react';
 const heroPhoto = '/gallery/profile-photo-CKHWKAEt.jpg';
 import { motion } from 'framer-motion';
 
+const professions = ['Web Developer', 'AI Expert', 'SEO Expert', 'Digital Marketer'];
+
 export function HeroSection() {
   const handleContactClick = () => {
     document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const professions = ['Web Developer', 'AI Expert', 'SEO Expert', 'Digital Marketer'];
   const [index, setIndex] = useState(0);
   const [fade, setFade] = useState(true);
 

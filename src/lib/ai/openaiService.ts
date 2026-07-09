@@ -192,7 +192,7 @@ CAPABILITIES & BUSINESS FLOWS:
     return {
       content: assistantMessage?.content || "I'm sorry, I couldn't process that response."
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('OpenAI Service Error:', error);
     throw error;
   }

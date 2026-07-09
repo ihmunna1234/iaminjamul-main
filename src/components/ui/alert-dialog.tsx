@@ -1,5 +1,5 @@
 import * as React from "react";
-// @ts-ignore
+// @ts-expect-error Radix type mismatch
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 import { cn } from "@/lib/utils";
 

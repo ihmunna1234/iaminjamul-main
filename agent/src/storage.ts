@@ -2,7 +2,7 @@
  * storage.ts — Saves generated blog posts to Supabase
  */
 
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import type { GeneratedBlogPost } from './writer.js';
 
 function createSlug(title: string): string {
@@ -12,6 +12,15 @@ function createSlug(title: string): string {
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-')
     .slice(0, 80);
+}
+
+async function ensureBucket(supabase: SupabaseClient, bucketName: string) {
+  const { data: buckets } = await supabase.storage.listBuckets();
+  const exists = buckets?.some((b: { name: string }) => b.name === bucketName);
+  if (!exists) {
+    console.log(`  📦 Creating public storage bucket: "${bucketName}"`);
+    await supabase.storage.createBucket(bucketName, { public: true });
+  }
 }
 
 export async function saveBlogPost(post: GeneratedBlogPost): Promise<string> {
@@ -27,6 +36,26 @@ export async function saveBlogPost(post: GeneratedBlogPost): Promise<string> {
   // Generate a unique slug
   const baseSlug = createSlug(post.title);
   const slug = `${baseSlug}-${Date.now()}`;
+  
+  let finalImageUrl = post.image;
+
+  if (post.imageBuffer) {
+    console.log(`  ☁️  Uploading generated image to Supabase Storage...`);
+    await ensureBucket(supabase, 'blog-images');
+    
+    const filePath = `${slug}.png`;
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from('blog-images')
+      .upload(filePath, post.imageBuffer, { contentType: 'image/png', upsert: true });
+      
+    if (uploadError) {
+      console.error(`  ❌ Failed to upload image: ${uploadError.message}`);
+    } else {
+      const { data: publicUrlData } = supabase.storage.from('blog-images').getPublicUrl(filePath);
+      finalImageUrl = publicUrlData.publicUrl;
+      console.log(`  ✅ Image uploaded: ${finalImageUrl}`);
+    }
+  }
 
   const { data, error } = await supabase
     .from('blog_posts')
@@ -37,7 +66,7 @@ export async function saveBlogPost(post: GeneratedBlogPost): Promise<string> {
       content: post.content,
       category: post.category,
       tags: post.tags,
-      image: post.image,
+      image: finalImageUrl,
       author: post.author,
       author_role: post.authorRole,
       read_time: post.readTime,
