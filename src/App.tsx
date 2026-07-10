@@ -6,9 +6,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import BlogList from "./pages/BlogList";
 import BlogPost from "./pages/BlogPost";
-import AIAdmin from "./pages/AIAdmin";
+
 import NotFound from "./pages/NotFound";
-import { ChatWidget } from "./components/ChatWidget";
+
 import { SpeedInsights } from "@vercel/speed-insights/react";
 
 const queryClient = new QueryClient();
@@ -23,11 +23,11 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/blogs" element={<BlogList />} />
           <Route path="/blog/:id" element={<BlogPost />} />
-          <Route path="/ai-admin" element={<AIAdmin />} />
+
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
-        <ChatWidget />
+
       </BrowserRouter>
       <SpeedInsights />
     </TooltipProvider>
