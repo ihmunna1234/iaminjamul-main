@@ -24,9 +24,9 @@ export function ContactSection() {
     setIsSubmitting(true);
 
     try {
-      const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || '1ed3c344-c946-4c86-bed5-f1690685ade3';
+      const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
       
-      if (accessKey === '1ed3c344-c946-4c86-bed5-f1690685ade3') {
+      if (!accessKey) {
         console.warn('⚠️ Web3Forms access key not configured. Please add VITE_WEB3FORMS_ACCESS_KEY to your .env file.');
       }
 
