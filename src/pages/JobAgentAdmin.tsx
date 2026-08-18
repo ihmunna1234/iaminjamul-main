@@ -20,6 +20,18 @@ import {
   ClipboardList,
   ChevronDown,
   ChevronUp,
+  User,
+  Globe,
+  Phone,
+  MapPin,
+  Linkedin,
+  Github,
+  FileText,
+  Plus,
+  Trash2,
+  Sliders,
+  Save,
+  Check
 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { Navbar } from '@/components/Navbar';
@@ -62,6 +74,51 @@ interface InterviewAlert {
   alert_status: 'New' | 'Acknowledged' | 'Scheduled';
   detected_at: string;
 }
+
+export interface CandidateProfile {
+  id?: string;
+  full_name: string;
+  email: string;
+  phone: string;
+  location: string;
+  portfolio_url: string;
+  linkedin_url: string;
+  github_url: string;
+  headline: string;
+  experience_years: string;
+  bio: string;
+  skills: string;
+  target_roles: string[];
+  target_countries: string[];
+  min_match_score: number;
+  resume_pdf_path: string;
+}
+
+const DEFAULT_PROFILE: CandidateProfile = {
+  full_name: 'Injamul Islam',
+  email: 'injamul@iaminjamul.com',
+  phone: '+966582822130',
+  location: 'Riyadh, Saudi Arabia',
+  portfolio_url: 'https://www.iaminjamul.com',
+  linkedin_url: 'https://linkedin.com/in/iaminjamul',
+  github_url: 'https://github.com/ihmunna1234',
+  headline: 'Senior Full-Stack AI Engineer',
+  experience_years: '5+ years',
+  bio: '5+ years building autonomous AI systems, scalable full-stack web applications, multi-agent workflows, and real-time dashboards.',
+  skills: 'React, Next.js, TypeScript, Python, LangGraph, CrewAI, OpenAI, Playwright, Supabase, Node.js, Tailwind CSS, PostgreSQL, REST APIs',
+  target_roles: [
+    'Senior AI Engineer',
+    'Staff Full-Stack Engineer',
+    'AI Agent Developer',
+    'Solutions Architect',
+    'Lead Software Engineer'
+  ],
+  target_countries: ['EU', 'UK', 'Ireland', 'Canada', 'NZ', 'USA', 'Remote'],
+  min_match_score: 85,
+  resume_pdf_path: 'assets/Injamul_Islam_Resume.pdf'
+};
+
+const AVAILABLE_COUNTRIES = ['EU', 'UK', 'Ireland', 'Canada', 'NZ', 'USA', 'Remote'];
 
 // Fallback preview data when Supabase is not configured
 const MOCK_JOBS: Job[] = [
@@ -184,12 +241,16 @@ export default function JobAgentAdmin() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [logs, setLogs] = useState<AgentLog[]>([]);
   const [interviews, setInterviews] = useState<InterviewAlert[]>([]);
+  const [profile, setProfile] = useState<CandidateProfile>(DEFAULT_PROFILE);
+  const [isSavingProfile, setIsSavingProfile] = useState(false);
+  const [newRoleInput, setNewRoleInput] = useState('');
+  
   const [isAgentRunning, setIsAgentRunning] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCountry, setSelectedCountry] = useState<string>('ALL');
   const [selectedStatus, setSelectedStatus] = useState<string>('ALL');
   const [isLoading, setIsLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'approval' | 'jobs'>('approval');
+  const [activeTab, setActiveTab] = useState<'profile' | 'approval' | 'jobs'>('profile');
   const [expandedCoverLetter, setExpandedCoverLetter] = useState<string | null>(null);
   const [approvingId, setApprovingId] = useState<string | null>(null);
 
@@ -201,16 +262,43 @@ export default function JobAgentAdmin() {
       setIsLoading(true);
       if (isSupabaseConfigured && supabase) {
         try {
-          const [jobsRes, logsRes, intRes] = await Promise.all([
+          const [jobsRes, logsRes, intRes, profileRes] = await Promise.all([
             supabase.from('jobs').select('*').order('created_at', { ascending: false }),
             supabase.from('agent_logs').select('*').order('created_at', { ascending: false }).limit(50),
             supabase.from('interviews').select('*').order('detected_at', { ascending: false }),
+            supabase.from('candidate_profiles').select('*').limit(1),
           ]);
 
           if (!isMounted) return;
           setJobs(jobsRes.data ?? []);
           setLogs(logsRes.data ?? []);
           setInterviews(intRes.data ?? []);
+
+          if (profileRes.data && profileRes.data.length > 0) {
+            const dbProfile = profileRes.data[0];
+            setProfile({
+              id: dbProfile.id,
+              full_name: dbProfile.full_name || DEFAULT_PROFILE.full_name,
+              email: dbProfile.email || DEFAULT_PROFILE.email,
+              phone: dbProfile.phone || DEFAULT_PROFILE.phone,
+              location: dbProfile.location || DEFAULT_PROFILE.location,
+              portfolio_url: dbProfile.portfolio_url || DEFAULT_PROFILE.portfolio_url,
+              linkedin_url: dbProfile.linkedin_url || DEFAULT_PROFILE.linkedin_url,
+              github_url: dbProfile.github_url || DEFAULT_PROFILE.github_url,
+              headline: dbProfile.headline || DEFAULT_PROFILE.headline,
+              experience_years: dbProfile.experience_years || DEFAULT_PROFILE.experience_years,
+              bio: dbProfile.bio || DEFAULT_PROFILE.bio,
+              skills: dbProfile.skills || DEFAULT_PROFILE.skills,
+              target_roles: Array.isArray(dbProfile.target_roles)
+                ? dbProfile.target_roles
+                : DEFAULT_PROFILE.target_roles,
+              target_countries: Array.isArray(dbProfile.target_countries)
+                ? dbProfile.target_countries
+                : DEFAULT_PROFILE.target_countries,
+              min_match_score: dbProfile.min_match_score || DEFAULT_PROFILE.min_match_score,
+              resume_pdf_path: dbProfile.resume_pdf_path || DEFAULT_PROFILE.resume_pdf_path,
+            });
+          }
         } catch (e) {
           console.error('Error fetching Supabase job agent data:', e);
           if (!isMounted) return;
@@ -282,6 +370,88 @@ export default function JobAgentAdmin() {
     window.location.reload();
   };
 
+  // Save Candidate Profile
+  const handleSaveProfile = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    setIsSavingProfile(true);
+
+    try {
+      if (isSupabaseConfigured && supabase) {
+        if (profile.id) {
+          await supabase
+            .from('candidate_profiles')
+            .update({
+              full_name: profile.full_name,
+              email: profile.email,
+              phone: profile.phone,
+              location: profile.location,
+              portfolio_url: profile.portfolio_url,
+              linkedin_url: profile.linkedin_url,
+              github_url: profile.github_url,
+              headline: profile.headline,
+              experience_years: profile.experience_years,
+              bio: profile.bio,
+              skills: profile.skills,
+              target_roles: profile.target_roles,
+              target_countries: profile.target_countries,
+              min_match_score: profile.min_match_score,
+              resume_pdf_path: profile.resume_pdf_path,
+              updated_at: new Date().toISOString(),
+            })
+            .eq('id', profile.id);
+        } else {
+          const res = await supabase.from('candidate_profiles').insert([profile]).select();
+          if (res.data && res.data.length > 0) {
+            setProfile((prev) => ({ ...prev, id: res.data[0].id }));
+          }
+        }
+      }
+
+      toast({
+        title: '✅ Candidate Profile Saved',
+        description: 'Agent targeting and candidate information updated successfully.',
+      });
+    } catch (err: any) {
+      console.error('Error saving profile:', err);
+      toast({
+        title: 'Error Saving Profile',
+        description: err.message || 'Please check your connection.',
+      });
+    } finally {
+      setIsSavingProfile(false);
+    }
+  };
+
+  const handleAddTargetRole = () => {
+    if (!newRoleInput.trim()) return;
+    if (!profile.target_roles.includes(newRoleInput.trim())) {
+      setProfile((prev) => ({
+        ...prev,
+        target_roles: [...prev.target_roles, newRoleInput.trim()]
+      }));
+    }
+    setNewRoleInput('');
+  };
+
+  const handleRemoveTargetRole = (roleToRemove: string) => {
+    setProfile((prev) => ({
+      ...prev,
+      target_roles: prev.target_roles.filter((r) => r !== roleToRemove)
+    }));
+  };
+
+  const handleToggleCountry = (country: string) => {
+    setProfile((prev) => {
+      const exists = prev.target_countries.includes(country);
+      return {
+        ...prev,
+        target_countries: exists
+          ? prev.target_countries.filter((c) => c !== country)
+          : [...prev.target_countries, country]
+      };
+    });
+  };
+
   const handleTriggerAgent = async () => {
     setIsAgentRunning((prev) => !prev);
     const newStatus = !isAgentRunning;
@@ -289,7 +459,7 @@ export default function JobAgentAdmin() {
     toast({
       title: newStatus ? '🤖 Multi-Agent Execution Started' : '⏸️ Agents Paused',
       description: newStatus
-        ? 'Job Scout & Customizer agents are actively scouting openings.'
+        ? `Job Scout is targeting: ${profile.target_roles.slice(0, 2).join(', ')}...`
         : 'All background agent workers have been paused.',
     });
 
@@ -299,7 +469,7 @@ export default function JobAgentAdmin() {
       level: newStatus ? 'SUCCESS' : 'WARN',
       action: newStatus ? 'Start Graph' : 'Pause Graph',
       message: newStatus
-        ? 'Autonomous multi-agent workflow initiated across EU, UK, Canada & NZ.'
+        ? `Autonomous workflow initiated for ${profile.full_name} targeting ${profile.target_countries.join(', ')}.`
         : 'User requested workflow pause.',
       created_at: new Date().toISOString(),
     };
@@ -429,7 +599,8 @@ export default function JobAgentAdmin() {
                 <span className="font-sans font-black text-[#FF5733]">Control Center</span>
               </h1>
               <p className="text-[#666666] text-sm max-w-2xl leading-relaxed">
-                Autonomous job scraping, real-time AI cover letter generation, human-in-the-loop review queue, and automated Playwright ATS submission.
+                Autonomous job scouting, real-time AI cover letter generation, human-in-the-loop review queue, and automated application submissions for{' '}
+                <span className="font-semibold text-[#121212]">{profile.full_name}</span>.
               </p>
             </div>
 
@@ -476,7 +647,7 @@ export default function JobAgentAdmin() {
                 </div>
               </div>
               <div className="text-3xl sm:text-4xl font-black text-[#121212] font-sans">{totalFound}</div>
-              <div className="text-xs text-[#888888] mt-2">Targeting EU, UK, CA, NZ</div>
+              <div className="text-xs text-[#888888] mt-2">Targeting {profile.target_countries.slice(0, 3).join(', ')}...</div>
             </div>
 
             <div className="bg-white border border-[#E5E5E0] p-6 rounded-3xl shadow-sm hover:shadow-md transition-all">
@@ -487,7 +658,7 @@ export default function JobAgentAdmin() {
                 </div>
               </div>
               <div className="text-3xl sm:text-4xl font-black text-emerald-600 font-sans">{totalApplied}</div>
-              <div className="text-xs text-[#888888] mt-2">Email & Playwright Auto-Apply</div>
+              <div className="text-xs text-[#888888] mt-2">Auto-Apply & Portal Fill</div>
             </div>
 
             <div className="bg-white border border-[#E5E5E0] p-6 rounded-3xl shadow-sm hover:shadow-md transition-all">
@@ -554,10 +725,22 @@ export default function JobAgentAdmin() {
           </div>
 
           {/* Tab Navigation Pill Bar */}
-          <div className="flex items-center gap-2 bg-white border border-[#E5E5E0] p-1.5 rounded-full w-fit shadow-sm">
+          <div className="flex items-center gap-2 bg-white border border-[#E5E5E0] p-1.5 rounded-full w-fit shadow-sm flex-wrap">
+            <button
+              onClick={() => setActiveTab('profile')}
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all ${
+                activeTab === 'profile'
+                  ? 'bg-[#FF5733] text-white shadow-md shadow-[#FF5733]/25'
+                  : 'text-[#666666] hover:text-[#121212]'
+              }`}
+            >
+              <User className="w-4 h-4" />
+              <span>My Candidate Profile & Targeting</span>
+            </button>
+
             <button
               onClick={() => setActiveTab('approval')}
-              className={`flex items-center gap-2 px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all ${
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all ${
                 activeTab === 'approval'
                   ? 'bg-[#FF5733] text-white shadow-md shadow-[#FF5733]/25'
                   : 'text-[#666666] hover:text-[#121212]'
@@ -580,7 +763,7 @@ export default function JobAgentAdmin() {
 
             <button
               onClick={() => setActiveTab('jobs')}
-              className={`flex items-center gap-2 px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all ${
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all ${
                 activeTab === 'jobs'
                   ? 'bg-[#FF5733] text-white shadow-md shadow-[#FF5733]/25'
                   : 'text-[#666666] hover:text-[#121212]'
@@ -591,7 +774,426 @@ export default function JobAgentAdmin() {
             </button>
           </div>
 
-          {/* TAB 1: Human-in-the-Loop Approval Queue */}
+          {/* TAB 1: Candidate Profile & Agent Targeting */}
+          {activeTab === 'profile' && (
+            <div className="space-y-8 animate-fade-in">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-2xl font-bold text-[#121212] flex items-center gap-2">
+                    <User className="w-6 h-6 text-[#FF5733]" />
+                    <span>Candidate Profile & Targeting Engine</span>
+                  </h2>
+                  <p className="text-xs sm:text-sm text-[#666666] mt-1">
+                    The autonomous multi-agent system uses this profile to scout tailored jobs, customize cover letters, and fill application portals on your behalf.
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => handleSaveProfile()}
+                  disabled={isSavingProfile}
+                  className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold bg-[#FF5733] hover:bg-[#E64D2B] text-white shadow-md shadow-[#FF5733]/25 hover:shadow-lg transition-all disabled:opacity-60 self-start sm:self-auto"
+                >
+                  <Save className="w-4 h-4" />
+                  <span>{isSavingProfile ? 'Saving Changes...' : 'Save Profile Changes'}</span>
+                </button>
+              </div>
+
+              <form onSubmit={handleSaveProfile} className="space-y-8">
+                
+                {/* 1. Profile Summary Card */}
+                <div className="bg-white border border-[#E5E5E0] p-6 sm:p-8 rounded-3xl shadow-sm space-y-6">
+                  <div className="flex items-center gap-3 border-b border-[#E5E5E0] pb-4">
+                    <div className="w-10 h-10 rounded-2xl bg-[#FF5733]/10 text-[#FF5733] flex items-center justify-center font-bold">
+                      1
+                    </div>
+                    <div>
+                      <h3 className="text-base font-bold text-[#121212]">Personal & Contact Information</h3>
+                      <p className="text-xs text-[#666666]">Used by Playwright automator to fill ATS forms and contact fields.</p>
+                    </div>
+                  </div>
+
+                  <div className="grid sm:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-[#666666] mb-2">
+                        Full Name
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          value={profile.full_name}
+                          onChange={(e) => setProfile({ ...profile, full_name: e.target.value })}
+                          className="w-full bg-[#F9F9F7] border border-[#E5E5E0] rounded-2xl px-4 py-3 text-[#121212] text-sm focus:outline-none focus:border-[#FF5733] pl-10"
+                          placeholder="e.g. Injamul Islam"
+                          required
+                        />
+                        <User className="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5" />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-[#666666] mb-2">
+                        Email Address
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="email"
+                          value={profile.email}
+                          onChange={(e) => setProfile({ ...profile, email: e.target.value })}
+                          className="w-full bg-[#F9F9F7] border border-[#E5E5E0] rounded-2xl px-4 py-3 text-[#121212] text-sm focus:outline-none focus:border-[#FF5733] pl-10"
+                          placeholder="e.g. injamul@iaminjamul.com"
+                          required
+                        />
+                        <Mail className="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5" />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-[#666666] mb-2">
+                        Phone Number
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="tel"
+                          value={profile.phone}
+                          onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
+                          className="w-full bg-[#F9F9F7] border border-[#E5E5E0] rounded-2xl px-4 py-3 text-[#121212] text-sm focus:outline-none focus:border-[#FF5733] pl-10"
+                          placeholder="e.g. +966582822130"
+                          required
+                        />
+                        <Phone className="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5" />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-[#666666] mb-2">
+                        Current Location / Country
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          value={profile.location}
+                          onChange={(e) => setProfile({ ...profile, location: e.target.value })}
+                          className="w-full bg-[#F9F9F7] border border-[#E5E5E0] rounded-2xl px-4 py-3 text-[#121212] text-sm focus:outline-none focus:border-[#FF5733] pl-10"
+                          placeholder="e.g. Riyadh, Saudi Arabia"
+                          required
+                        />
+                        <MapPin className="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 2. Links & Online Presence */}
+                <div className="bg-white border border-[#E5E5E0] p-6 sm:p-8 rounded-3xl shadow-sm space-y-6">
+                  <div className="flex items-center gap-3 border-b border-[#E5E5E0] pb-4">
+                    <div className="w-10 h-10 rounded-2xl bg-[#FF5733]/10 text-[#FF5733] flex items-center justify-center font-bold">
+                      2
+                    </div>
+                    <div>
+                      <h3 className="text-base font-bold text-[#121212]">Online Presence & Portfolio Links</h3>
+                      <p className="text-xs text-[#666666]">Injected into cover letters and auto-filled into ATS application forms.</p>
+                    </div>
+                  </div>
+
+                  <div className="grid sm:grid-cols-3 gap-6">
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-[#666666] mb-2">
+                        Portfolio Website URL
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="url"
+                          value={profile.portfolio_url}
+                          onChange={(e) => setProfile({ ...profile, portfolio_url: e.target.value })}
+                          className="w-full bg-[#F9F9F7] border border-[#E5E5E0] rounded-2xl px-4 py-3 text-[#121212] text-sm focus:outline-none focus:border-[#FF5733] pl-10"
+                          placeholder="https://www.iaminjamul.com"
+                          required
+                        />
+                        <Globe className="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5" />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-[#666666] mb-2">
+                        LinkedIn Profile URL
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="url"
+                          value={profile.linkedin_url}
+                          onChange={(e) => setProfile({ ...profile, linkedin_url: e.target.value })}
+                          className="w-full bg-[#F9F9F7] border border-[#E5E5E0] rounded-2xl px-4 py-3 text-[#121212] text-sm focus:outline-none focus:border-[#FF5733] pl-10"
+                          placeholder="https://linkedin.com/in/iaminjamul"
+                          required
+                        />
+                        <Linkedin className="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5" />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-[#666666] mb-2">
+                        GitHub Profile URL
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="url"
+                          value={profile.github_url}
+                          onChange={(e) => setProfile({ ...profile, github_url: e.target.value })}
+                          className="w-full bg-[#F9F9F7] border border-[#E5E5E0] rounded-2xl px-4 py-3 text-[#121212] text-sm focus:outline-none focus:border-[#FF5733] pl-10"
+                          placeholder="https://github.com/ihmunna1234"
+                        />
+                        <Github className="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 3. Professional Profile & Bio */}
+                <div className="bg-white border border-[#E5E5E0] p-6 sm:p-8 rounded-3xl shadow-sm space-y-6">
+                  <div className="flex items-center gap-3 border-b border-[#E5E5E0] pb-4">
+                    <div className="w-10 h-10 rounded-2xl bg-[#FF5733]/10 text-[#FF5733] flex items-center justify-center font-bold">
+                      3
+                    </div>
+                    <div>
+                      <h3 className="text-base font-bold text-[#121212]">Professional Background & Experience</h3>
+                      <p className="text-xs text-[#666666]">Feeds the LLM Cover Letter Generator with customized context.</p>
+                    </div>
+                  </div>
+
+                  <div className="grid sm:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-[#666666] mb-2">
+                        Professional Headline / Primary Role
+                      </label>
+                      <input
+                        type="text"
+                        value={profile.headline}
+                        onChange={(e) => setProfile({ ...profile, headline: e.target.value })}
+                        className="w-full bg-[#F9F9F7] border border-[#E5E5E0] rounded-2xl px-4 py-3 text-[#121212] text-sm focus:outline-none focus:border-[#FF5733]"
+                        placeholder="e.g. Senior Full-Stack AI Engineer"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-[#666666] mb-2">
+                        Years of Experience
+                      </label>
+                      <input
+                        type="text"
+                        value={profile.experience_years}
+                        onChange={(e) => setProfile({ ...profile, experience_years: e.target.value })}
+                        className="w-full bg-[#F9F9F7] border border-[#E5E5E0] rounded-2xl px-4 py-3 text-[#121212] text-sm focus:outline-none focus:border-[#FF5733]"
+                        placeholder="e.g. 5+ years"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#666666] mb-2">
+                      Professional Bio & Experience Summary
+                    </label>
+                    <textarea
+                      rows={3}
+                      value={profile.bio}
+                      onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
+                      className="w-full bg-[#F9F9F7] border border-[#E5E5E0] rounded-2xl p-4 text-[#121212] text-sm focus:outline-none focus:border-[#FF5733] leading-relaxed"
+                      placeholder="Briefly describe your career achievements, main technologies, and value proposition..."
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#666666] mb-2">
+                      Core Skills & Technical Stack (Comma Separated)
+                    </label>
+                    <textarea
+                      rows={2}
+                      value={profile.skills}
+                      onChange={(e) => setProfile({ ...profile, skills: e.target.value })}
+                      className="w-full bg-[#F9F9F7] border border-[#E5E5E0] rounded-2xl p-4 text-[#121212] text-sm focus:outline-none focus:border-[#FF5733]"
+                      placeholder="e.g. React, Next.js, TypeScript, Python, LangGraph, Playwright, Supabase"
+                      required
+                    />
+                    
+                    {/* Live skills badges */}
+                    <div className="flex flex-wrap gap-2 mt-3">
+                      {profile.skills
+                        .split(',')
+                        .map((s) => s.trim())
+                        .filter(Boolean)
+                        .map((skill, i) => (
+                          <span
+                            key={i}
+                            className="px-3 py-1 rounded-full text-xs font-semibold bg-[#F9F9F7] border border-[#E5E5E0] text-[#121212]"
+                          >
+                            {skill}
+                          </span>
+                        ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* 4. Target Roles & Geographical Regions */}
+                <div className="bg-white border border-[#E5E5E0] p-6 sm:p-8 rounded-3xl shadow-sm space-y-6">
+                  <div className="flex items-center gap-3 border-b border-[#E5E5E0] pb-4">
+                    <div className="w-10 h-10 rounded-2xl bg-[#FF5733]/10 text-[#FF5733] flex items-center justify-center font-bold">
+                      4
+                    </div>
+                    <div>
+                      <h3 className="text-base font-bold text-[#121212]">Job Scout Targeting & Preferences</h3>
+                      <p className="text-xs text-[#666666]">Determines which roles and countries the Job Scout Agent will discover.</p>
+                    </div>
+                  </div>
+
+                  {/* Target Roles */}
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#666666] mb-2">
+                      Target Job Titles
+                    </label>
+
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {profile.target_roles.map((role) => (
+                        <span
+                          key={role}
+                          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#FF5733]/10 text-[#FF5733] border border-[#FF5733]/25"
+                        >
+                          <span>{role}</span>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveTargetRole(role)}
+                            className="hover:opacity-75"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="flex gap-2 max-w-md">
+                      <input
+                        type="text"
+                        value={newRoleInput}
+                        onChange={(e) => setNewRoleInput(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            handleAddTargetRole();
+                          }
+                        }}
+                        placeholder="Add custom target title..."
+                        className="flex-1 bg-[#F9F9F7] border border-[#E5E5E0] rounded-2xl px-4 py-2 text-xs text-[#121212] focus:outline-none focus:border-[#FF5733]"
+                      />
+                      <button
+                        type="button"
+                        onClick={handleAddTargetRole}
+                        className="px-4 py-2 rounded-2xl text-xs font-semibold bg-white border border-[#E5E5E0] hover:bg-[#F9F9F7] text-[#121212] flex items-center gap-1 shadow-sm"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                        <span>Add</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Target Countries */}
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#666666] mb-2">
+                      Target Geographical Regions
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                      {AVAILABLE_COUNTRIES.map((c) => {
+                        const isSelected = profile.target_countries.includes(c);
+                        return (
+                          <button
+                            key={c}
+                            type="button"
+                            onClick={() => handleToggleCountry(c)}
+                            className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold transition-all border ${
+                              isSelected
+                                ? 'bg-[#FF5733] text-white border-[#FF5733] shadow-sm shadow-[#FF5733]/25'
+                                : 'bg-[#F9F9F7] text-[#666666] border-[#E5E5E0] hover:bg-white hover:text-[#121212]'
+                            }`}
+                          >
+                            {isSelected && <Check className="w-3.5 h-3.5" />}
+                            <span>{c}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Minimum Match Score Threshold */}
+                  <div className="pt-2">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs font-semibold uppercase tracking-wider text-[#666666]">
+                        Minimum Match Score Threshold
+                      </label>
+                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#FF5733]/10 text-[#FF5733] border border-[#FF5733]/20">
+                        {profile.min_match_score}% Match
+                      </span>
+                    </div>
+                    <input
+                      type="range"
+                      min="50"
+                      max="100"
+                      step="5"
+                      value={profile.min_match_score}
+                      onChange={(e) => setProfile({ ...profile, min_match_score: parseInt(e.target.value) })}
+                      className="w-full h-2 bg-[#E5E5E0] rounded-lg appearance-none cursor-pointer accent-[#FF5733]"
+                    />
+                    <p className="text-xs text-[#888888] mt-1.5">
+                      The scout agent will only shortlist job postings that meet or exceed this matching confidence.
+                    </p>
+                  </div>
+                </div>
+
+                {/* 5. Resume File & Document Path */}
+                <div className="bg-white border border-[#E5E5E0] p-6 sm:p-8 rounded-3xl shadow-sm space-y-6">
+                  <div className="flex items-center gap-3 border-b border-[#E5E5E0] pb-4">
+                    <div className="w-10 h-10 rounded-2xl bg-[#FF5733]/10 text-[#FF5733] flex items-center justify-center font-bold">
+                      5
+                    </div>
+                    <div>
+                      <h3 className="text-base font-bold text-[#121212]">Resume File & PDF Path</h3>
+                      <p className="text-xs text-[#666666]">Path to your PDF resume for Playwright automatic upload.</p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#666666] mb-2">
+                      Resume PDF File Path (Local or Assets)
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="text"
+                        value={profile.resume_pdf_path}
+                        onChange={(e) => setProfile({ ...profile, resume_pdf_path: e.target.value })}
+                        className="w-full bg-[#F9F9F7] border border-[#E5E5E0] rounded-2xl px-4 py-3 text-[#121212] text-sm focus:outline-none focus:border-[#FF5733] pl-10 font-mono"
+                        placeholder="assets/Injamul_Islam_Resume.pdf"
+                      />
+                      <FileText className="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Save Button Row */}
+                <div className="flex items-center justify-end gap-4 pt-2">
+                  <button
+                    type="submit"
+                    disabled={isSavingProfile}
+                    className="flex items-center gap-2 px-8 py-3.5 rounded-full text-sm font-semibold bg-[#FF5733] hover:bg-[#E64D2B] text-white shadow-md shadow-[#FF5733]/25 hover:shadow-lg transition-all disabled:opacity-60"
+                  >
+                    <Save className="w-4 h-4" />
+                    <span>{isSavingProfile ? 'Saving...' : 'Save Profile & Update Agents'}</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          )}
+
+          {/* TAB 2: Human-in-the-Loop Approval Queue */}
           {activeTab === 'approval' && (
             <div className="space-y-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -765,7 +1367,7 @@ export default function JobAgentAdmin() {
             </div>
           )}
 
-          {/* TAB 2: All Opportunities Table + Logs */}
+          {/* TAB 3: All Opportunities Table + Logs */}
           {activeTab === 'jobs' && (
             <div className="grid lg:grid-cols-3 gap-8">
               {/* Left Column (2 cols): Jobs Table */}
