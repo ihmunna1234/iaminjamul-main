@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Lock, KeyRound, ShieldAlert, ArrowRight } from 'lucide-react';
+import { KeyRound, ShieldAlert, ArrowRight, Sparkles, ShieldCheck } from 'lucide-react';
+import { Navbar } from '@/components/Navbar';
+import { Footer } from '@/components/Footer';
 
 interface AdminProtectedRouteProps {
   children: React.ReactNode;
@@ -28,75 +30,86 @@ export function AdminProtectedRoute({ children }: AdminProtectedRouteProps) {
       setIsAuthenticated(true);
       setError('');
     } else {
-      setError('Invalid App Pass key. Please try again.');
+      setError('Invalid App Pass key. Please check your credentials.');
     }
   };
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#0d1117] flex items-center justify-center text-white">
-        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-orange-500"></div>
+      <div className="min-h-screen bg-[#F9F9F7] flex items-center justify-center text-[#121212]">
+        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-[#FF5733]"></div>
       </div>
     );
   }
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-[#0a0d14] text-white flex items-center justify-center p-4 relative overflow-hidden font-sans">
-        {/* Background glow effects */}
-        <div className="absolute -top-40 -left-40 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="min-h-screen bg-[#F9F9F7] text-[#121212] flex flex-col font-sans">
+        <Navbar />
 
-        <div className="max-w-md w-full bg-[#121824]/80 backdrop-blur-xl border border-white/10 p-8 rounded-2xl shadow-2xl relative z-10 animate-fade-in">
-          <div className="w-14 h-14 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center mx-auto mb-6 text-orange-500">
-            <Lock className="w-7 h-7" />
-          </div>
+        <div className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-8 pt-28 pb-16 relative overflow-hidden">
+          {/* Subtle background glow */}
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#FF5733]/5 rounded-full blur-3xl pointer-events-none" />
 
-          <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold tracking-tight text-white mb-2">Job Agent Control Panel</h1>
-            <p className="text-gray-400 text-sm">
-              Enter your App Pass key to access the multi-agent control center.
-            </p>
-          </div>
-
-          <form onSubmit={handleLogin} className="space-y-5">
-            <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">
-                Secret App Pass
-              </label>
-              <div className="relative">
-                <input
-                  type="password"
-                  value={inputPass}
-                  onChange={(e) => setInputPass(e.target.value)}
-                  placeholder="••••••••••••"
-                  className="w-full bg-[#0a0d14] border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all font-mono text-sm pl-11"
-                  required
-                />
-                <KeyRound className="w-5 h-5 text-gray-500 absolute left-3.5 top-3.5" />
+          <div className="max-w-md w-full bg-white border border-[#E5E5E0] p-8 sm:p-10 rounded-3xl shadow-xl shadow-black/5 relative z-10 animate-fade-in">
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider border border-[#FF5733]/25 text-[#FF5733] bg-[#FF5733]/5 mb-6 font-sans">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Admin Access</span>
               </div>
+
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#121212] mb-2">
+                <span className="font-serif italic font-medium">Job Agent</span>{' '}
+                <span className="font-sans font-extrabold text-[#FF5733]">Control Center</span>
+              </h1>
+              <p className="text-[#666666] text-sm mt-2 leading-relaxed">
+                Enter your secure App Pass key to manage autonomous job applications and review live agent tracking.
+              </p>
             </div>
 
-            {error && (
-              <div className="flex items-center gap-2 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-xs animate-shake">
-                <ShieldAlert className="w-4 h-4 shrink-0" />
-                <span>{error}</span>
+            <form onSubmit={handleLogin} className="space-y-5">
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-[#666666] mb-2">
+                  App Pass Key
+                </label>
+                <div className="relative">
+                  <input
+                    type="password"
+                    value={inputPass}
+                    onChange={(e) => setInputPass(e.target.value)}
+                    placeholder="Enter secret key..."
+                    className="w-full bg-[#F9F9F7] border border-[#E5E5E0] rounded-2xl px-4 py-3 text-[#121212] placeholder-gray-400 focus:outline-none focus:border-[#FF5733] focus:ring-2 focus:ring-[#FF5733]/15 transition-all text-sm pl-11 font-mono"
+                    required
+                    autoFocus
+                  />
+                  <KeyRound className="w-5 h-5 text-gray-400 absolute left-3.5 top-3.5" />
+                </div>
               </div>
-            )}
 
-            <button
-              type="submit"
-              className="w-full bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white font-semibold py-3 px-6 rounded-xl transition-all shadow-lg shadow-orange-500/20 flex items-center justify-center gap-2 group"
-            >
-              <span>Unlock Admin Panel</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </button>
-          </form>
+              {error && (
+                <div className="flex items-center gap-2 p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-xs animate-shake">
+                  <ShieldAlert className="w-4 h-4 shrink-0" />
+                  <span>{error}</span>
+                </div>
+              )}
 
-          <div className="mt-6 text-center text-xs text-gray-500 border-t border-white/5 pt-4">
-            Protected system • www.iaminjamul.com
+              <button
+                type="submit"
+                className="w-full bg-[#FF5733] hover:bg-[#E64D2B] text-white font-medium py-3.5 px-6 rounded-full transition-all shadow-md shadow-[#FF5733]/25 hover:shadow-lg hover:shadow-[#FF5733]/30 flex items-center justify-center gap-2 group text-sm"
+              >
+                <span>Unlock Control Center</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </form>
+
+            <div className="mt-8 text-center text-xs text-[#888888] border-t border-[#E5E5E0] pt-4 flex items-center justify-center gap-1.5">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#FF5733]" />
+              <span>Protected Portal • iaminjamul.com</span>
+            </div>
           </div>
         </div>
+
+        <Footer />
       </div>
     );
   }
