@@ -190,6 +190,7 @@ const MOCK_INTERVIEWS: InterviewAlert[] = [
     async function loadData() {
       setIsLoading(true);
       if (isSupabaseConfigured && supabase) {
+        // Supabase IS connected — always show real data, never fall back to mock
         try {
           const [jobsRes, logsRes, intRes] = await Promise.all([
             supabase.from('jobs').select('*').order('created_at', { ascending: false }),
@@ -198,22 +199,18 @@ const MOCK_INTERVIEWS: InterviewAlert[] = [
           ]);
 
           if (!isMounted) return;
-          if (jobsRes.data && jobsRes.data.length > 0) setJobs(jobsRes.data);
-          else setJobs(MOCK_JOBS);
-
-          if (logsRes.data && logsRes.data.length > 0) setLogs(logsRes.data);
-          else setLogs(MOCK_LOGS);
-
-          if (intRes.data && intRes.data.length > 0) setInterviews(intRes.data);
-          else setInterviews(MOCK_INTERVIEWS);
+          setJobs(jobsRes.data ?? []);
+          setLogs(logsRes.data ?? []);
+          setInterviews(intRes.data ?? []);
         } catch (e) {
           console.error('Error fetching Supabase job agent data:', e);
           if (!isMounted) return;
-          setJobs(MOCK_JOBS);
-          setLogs(MOCK_LOGS);
-          setInterviews(MOCK_INTERVIEWS);
+          setJobs([]);
+          setLogs([]);
+          setInterviews([]);
         }
       } else {
+        // Supabase NOT configured — show mock data so UI preview works
         if (!isMounted) return;
         setJobs(MOCK_JOBS);
         setLogs(MOCK_LOGS);
