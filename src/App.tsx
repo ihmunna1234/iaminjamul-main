@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import BlogList from "./pages/BlogList";
 import BlogPost from "./pages/BlogPost";
+import JobAgentAdmin from "./pages/JobAgentAdmin";
+import { AdminProtectedRoute } from "./components/admin/AdminProtectedRoute";
 
 import NotFound from "./pages/NotFound";
 
@@ -23,6 +25,15 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/blogs" element={<BlogList />} />
           <Route path="/blog/:id" element={<BlogPost />} />
+          
+          <Route
+            path="/admin/job-agent"
+            element={
+              <AdminProtectedRoute>
+                <JobAgentAdmin />
+              </AdminProtectedRoute>
+            }
+          />
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
